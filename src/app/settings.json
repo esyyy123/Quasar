@@ -1,0 +1,7 @@
+{
+  "production": false,
+  "api": "https://dashboard.lilium.com/api",
+  "apidev": "https://dummyjson.com/test",
+  "images": "https://dashboard.thetreedots.com/storage",
+  "images_uat": "http://localhost:5000/storage"
+}
