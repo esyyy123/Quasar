@@ -8,6 +8,4 @@ const routes = [
   },
 ];
 
-console.log("auth");
-
 export default routes;

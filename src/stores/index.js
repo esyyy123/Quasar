@@ -11,7 +11,5 @@ export default store((/* { ssrContext } */) => {
   });
   pinia.use(piniaPluginPersistedState);
 
-  console.log("from pinia");
-
   return pinia;
 });

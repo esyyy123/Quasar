@@ -36,13 +36,31 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   Router.beforeEach(async (to) => {
+    const publicPages = ["/auth/login"];
+    const authRequired = !publicPages.includes(to.path);
     const auth = useAuthStore();
     const loader = pageLoader();
-    // const auth = useAuthStore();
-    // console.log("auth store", auth.user);
-    if (to.path !== "/auth/login") {
+    loader.start();
+
+    console.log(
+      "from router base",
+      auth.badge,
+      authRequired,
+      authRequired && !auth.user
+    );
+
+    if (authRequired && !auth.badge) {
       return "/auth/login";
     }
+
+    if (to.path.includes("/auth/login") && auth.badge) {
+      return "/app/dashboard";
+    }
+  });
+
+  Router.afterEach(() => {
+    const loader = pageLoader();
+    loader.stop();
   });
 
   return Router;

@@ -3,7 +3,7 @@
     <div style="width: 500px">
       <q-responsive :ratio="3.5 / 4">
         <q-card class="auth-card shadow-16">
-          <q-form @submit="emitLoginCheck">
+          <q-form @submit="processLogin">
             <q-card-section class="text-center">
               <h4><strong>Login</strong></h4>
             </q-card-section>
@@ -85,24 +85,75 @@
 <script>
 import { colors } from "quasar";
 import { Api, Notice } from "src/app/services/service";
+import { useAuthStore } from "src/app/stores/auth-store";
+import { useLoginStore } from "../stores/login-store";
 
 export default {
   data() {
     return {
-      username: "",
+      badge: "",
       password: "",
       passwordHide: true,
+      token: null,
+      refreshToken: null,
     };
   },
   mounted() {
-    const { getPaletteColor } = colors;
-    console.log(getPaletteColor);
-    this.testApi();
+    const store = useAuthStore();
+    const loginStore = useLoginStore();
+    console.log("store", store);
+    console.log("loginStore", loginStore);
+    //  const { getPaletteColor } = colors;
+    //  console.log(getPaletteColor);
+    // this.testApi();
   },
   methods: {
     async testApi() {
-      const response = await Api.get("www.google.com");
+      const url = "https://dummyjson.com/auth/login";
+      const payload = {
+        username: "emilys",
+        password: "emilyspass",
+      };
+      const response = await Api.post(url, payload);
       console.log(response);
+    },
+    loginFinal() {
+      const store = useAuthStore();
+      store.login(this.badge, this.token, this.refreshToken);
+    },
+    async processLogin() {
+      const loginStore = useLoginStore();
+
+      loginStore.updateField("badge", this.badge);
+      loginStore.updateField("password", this.password);
+
+      const payload = {
+        username: "emilys",
+        password: "emilyspass",
+      };
+
+      const { status, data } = await Api.post(
+        "https://dummyjson.com/auth/login",
+        payload
+      );
+      if (status == 200) {
+        console.log(loginStore);
+        console.log(data);
+        this.badge = "200399";
+        this.token = data.token;
+        this.refreshToken = data.refreshToken;
+        this.loginFinal();
+        return {
+          result: "success",
+          data: data,
+        };
+      } else {
+        console.log(loginStore);
+        return {
+          result: "error",
+          data: data.error,
+        };
+      }
     },
   },
 };

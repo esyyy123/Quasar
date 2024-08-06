@@ -5,10 +5,10 @@ import { api, axios } from "../../boot/axios";
 export const service = new services(settings).connect();
 
 export const Api = {
-  get: (name, id, params = {}) =>
-    service.sendApi({ method: "get", name: name, id: id, params: params }),
-  post: (name, value) =>
-    service.sendApi({ method: "post", name: name, value: value }),
+  get: (url, id, params = {}) =>
+    service.sendApi({ method: "get", url: url, id: id, params: params }),
+  post: (url, value) =>
+    service.sendApi({ method: "post", url: url, value: value }),
 };
 
 export const Notice = {
@@ -87,9 +87,9 @@ function services(setting) {
       const queryParams = body.params
         ? new URLSearchParams(body.params).toString()
         : null;
-      console.log(queryParams);
-      console.log(body);
-      console.log(hostapi);
+      // console.log(queryParams);
+      // console.log(`??!! body`, body);
+      // console.log(`aaaa => ${hostapi}`);
       let caller = await axios({
         headers: {
           "Content-Type":
@@ -97,11 +97,11 @@ function services(setting) {
         },
         baseURL: hostapi,
         method: body.method,
-        url:
-          "/" +
-          body.name +
-          (body.id ? "/" + body.id : "") +
-          (queryParams ? "?" + queryParams : ""),
+        url: body.url,
+        // "/" +
+        // body.name +
+        // (body.id ? "/" + body.id : "") +
+        // (queryParams ? "?" + queryParams : ""),
         // headers: this.authHeader(),
         data: body.value,
         responseType: body.responseType ? body.responseType : "json",
