@@ -13,7 +13,13 @@ export const useAuthStore = defineStore({
       this.token = token;
       this.refreshToken = refreshToken;
       console.log("auth store", { badge, token, refreshToken });
-      this.router.push("app/dashboard");
+      this.router.push("/app/dashboard");
+    },
+    logout() {
+      this.badge = null;
+      this.token = null;
+      this.refreshToken = null;
+      this.router.push("/auth/login");
     },
   },
   persist: {

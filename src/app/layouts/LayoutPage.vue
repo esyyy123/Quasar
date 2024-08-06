@@ -25,11 +25,11 @@
         ></q-btn>
         <div class="q-mr-md" style="text-align: end">
           <div class="text-h6 text-weight-light">
-            <span class="gt-sm">aaaa</span>
+            <span class="gt-sm">John doe</span>
 
             <q-btn round flat dense class="q-ml-sm">
               <q-avatar size="32px">
-                <q-img src=""></q-img>
+                <q-img src="https://dummyjson.com/icon/emilys/128"></q-img>
               </q-avatar>
               <q-popup-proxy auto-close>
                 <q-card style="width: 256px">
@@ -59,7 +59,7 @@
                       color="primary"
                       class="full-width"
                       label="Logout"
-                      @click="confirmLogoutDialog = true"
+                      @click="authStore.logout()"
                     ></q-btn>
                   </q-card-actions>
                 </q-card>
@@ -72,22 +72,22 @@
 
     <q-drawer v-model="leftDrawerOpen" side="left" bordered>
       <q-list>
-        <q-item to="/home" exact>
+        <q-item to="/app/dashboard" exact>
           <q-item-section>
             <q-item-label>Home</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/about">
+        <q-item to="/app/dashboard">
           <q-item-section>
             <q-item-label>About</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/services">
+        <q-item to="/app/dashboard">
           <q-item-section>
             <q-item-label>Services</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/contact">
+        <q-item to="/app/dashboard">
           <q-item-section>
             <q-item-label>Contact</q-item-label>
           </q-item-section>
@@ -105,11 +105,13 @@
 </template>
 
 <script>
+import { useAuthStore } from "../stores/auth-store";
 export default {
   data() {
     return {
       leftDrawerOpen: false,
       confirmLogoutDialog: false,
+      authStore: useAuthStore(),
     };
   },
   methods: {

@@ -1,5 +1,7 @@
 <template>
-  <q-page class="flex flex-center">
-    <h1>Dashboard Index !!!</h1>
-  </q-page>
+  <q-page-container>
+    <q-page padding>
+      <q-card bordered class=""> dwa </q-card>
+    </q-page>
+  </q-page-container>
 </template>
