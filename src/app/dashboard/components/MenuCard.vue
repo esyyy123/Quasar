@@ -8,7 +8,7 @@
         :bind="menu.iconName"
       >
         {{ Math.random() }}
-        <q-card class="menu-card" @click="Refresh">
+        <q-card class="menu-card" @click="moveTo(menu.route)">
           <q-card-section class="menu-icon">
             <q-icon :name="menu.iconName" size="xl"></q-icon>
           </q-card-section>
@@ -77,6 +77,9 @@ export default {
     Refresh() {
       router.push("/auth/login");
       console.log(window.location);
+    },
+    moveTo(route) {
+      this.$router.push(`/app/${route}`);
     },
   },
 };

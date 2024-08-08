@@ -1,4 +1,5 @@
 import dashboardRoutes from "./dashboard/routes";
+import schedulerPage from "./scheduler/routes";
 
 const routes = [
   {
@@ -8,7 +9,7 @@ const routes = [
       {
         path: "",
         // component: () => import("src/app/layouts/IndexPage.vue"),
-        children: [...dashboardRoutes],
+        children: [...dashboardRoutes, ...schedulerPage],
       },
       // {
       //   path: "dashboard",

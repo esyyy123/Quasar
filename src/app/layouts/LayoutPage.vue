@@ -17,5 +17,6 @@ export default {
   mounted() {
     console.log("Layout Page Loaded");
   },
+  methods: {},
 };
 </script>
