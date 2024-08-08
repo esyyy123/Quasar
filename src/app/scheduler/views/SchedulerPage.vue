@@ -47,7 +47,8 @@
         <span>10 - 25 July 2024</span>
       </div>
     </div>
-    <div class="row flex-center q-mb-md">
+    <!-- content core -->
+    <div v-if="isGanttActive" class="row flex-center q-mb-md">
       <div class="col-5">
         <q-btn
           icon="add"
@@ -123,6 +124,39 @@
         >
       </div>
     </div>
+    <div v-else class="row flex-center q-mb-md">
+      <div class="col">
+        <!-- <q-input
+          borderless
+          dense
+          debounce="500"
+          placeholder="Search..."
+          class="br-sm ll-outline"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input> -->
+        <q-btn
+          icon="tune"
+          class="q-mr-sm buttonScheduler"
+          outline
+          rounded
+          color="grey-7"
+          label="Filter"
+        />
+      </div>
+      <div class="col text-right">
+        <q-btn
+          icon="add"
+          class="q-mr-sm buttonScheduler"
+          unelevated
+          color="red-14"
+          label="Add Schedule"
+        />
+      </div>
+    </div>
+    <!-- content core end -->
   </q-page>
 </template>
 
