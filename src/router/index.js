@@ -53,7 +53,7 @@ export default route(function (/* { store, ssrContext } */) {
       return "/auth/login";
     }
 
-    if (to.path.includes("/auth/login") && auth.badge) {
+    if (to.path == "/" || (to.path.includes("/auth/login") && auth.badge)) {
       return "/app/dashboard";
     }
   });

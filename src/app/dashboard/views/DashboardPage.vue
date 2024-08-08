@@ -1,7 +1,22 @@
 <template>
-  <q-page-container>
-    <q-page padding>
-      <q-card bordered class=""> dwa </q-card>
-    </q-page>
-  </q-page-container>
+  <q-page class="q-px-md">
+    <menu-card></menu-card>
+  </q-page>
 </template>
+
+<script>
+import MenuCard from "../components/MenuCard.vue";
+
+export default {
+  // name: "DashboardPage",
+  components: {
+    MenuCard,
+  },
+  data() {
+    console.log("dashboard");
+  },
+  mounted() {
+    console.log("aa");
+  },
+};
+</script>
