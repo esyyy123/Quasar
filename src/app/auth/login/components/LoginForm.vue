@@ -69,19 +69,6 @@
   </q-page>
 </template>
 
-<style scoped>
-.auth-background {
-  background-color: #fafafa;
-}
-.auth-card {
-  border-radius: 25px;
-}
-.buttonLogin {
-  background-color: #cd2023;
-  font-size: 14px !important;
-}
-</style>
-
 <script>
 import { colors } from "quasar";
 import { Api, Notice } from "src/app/services/service";
@@ -158,3 +145,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.auth-background {
+  background-color: #fafafa;
+}
+.auth-card {
+  border-radius: 25px;
+}
+.buttonLogin {
+  background-color: #cd2023;
+  font-size: 14px !important;
+}
+</style>

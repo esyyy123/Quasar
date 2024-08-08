@@ -1,13 +1,14 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="row">
+    <div class="row wrap">
       <div
-        class="q-pa-sm col-xs-12 col-sm-6 col-md-4"
+        class="q-pa-sm col-xs-12 col-sm-6 col-md-3"
         v-for="menu in menuList"
         :key="menu.menuName"
         :bind="menu.iconName"
       >
-        <q-card class="menu-card">
+        {{ Math.random() }}
+        <q-card class="menu-card" @click="Refresh">
           <q-card-section class="menu-icon">
             <q-icon :name="menu.iconName" size="xl"></q-icon>
           </q-card-section>
@@ -21,6 +22,8 @@
 </template>
 
 <script>
+import router from "../../../router/routes";
+
 export default {
   name: "MenuCard",
   data() {
@@ -30,50 +33,61 @@ export default {
         {
           iconName: "login",
           menuName: "Login",
+          route: "login",
         },
         {
           iconName: "schedule",
           menuName: "Scheduler",
+          route: "scheduler",
         },
         {
           iconName: "logout",
           menuName: "Logout",
+          route: "logout",
         },
         {
           iconName: "refresh",
           menuName: "refresh",
+          route: "refresh",
         },
         {
           iconName: "app_registration",
           menuName: "regis",
+          route: "regis",
         },
         {
           iconName: "download_for_offline",
           menuName: "download",
+          route: "download",
         },
         {
           iconName: "create_new_folder",
           menuName: "new folder",
+          route: "new folder",
         },
         {
           iconName: "create_new_folder",
           menuName: "new folder",
+          route: "new folder",
         },
       ],
     };
+  },
+  methods: {
+    Refresh() {
+      router.push("/auth/login");
+      console.log(window.location);
+    },
   },
 };
 </script>
 
 <style scoped>
 .menu-container {
-  column-gap: 0;
-  column-count: 5;
+  /* width: auto; */
 }
 
 .menu-card {
-  /* max-height: 160px;
-  max-width: 260px; */
 }
 
 .menu-card:hover {
@@ -84,6 +98,7 @@ export default {
 .menu-icon {
   text-align: center;
   padding-top: 2vh;
+  color: #c10015;
 }
 
 .menu-detail {
