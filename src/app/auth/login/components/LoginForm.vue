@@ -61,6 +61,7 @@
                 type="submit"
                 dense
               ></q-btn>
+              <!-- <q-btn @click="alert">asda</q-btn> -->
             </q-card-section>
           </q-form>
         </q-card>
@@ -74,8 +75,27 @@ import { colors } from "quasar";
 import { Api, Notice } from "src/app/services/service";
 import { useAuthStore } from "src/app/stores/auth-store";
 import { useLoginStore } from "../stores/login-store";
+import { useQuasar } from "quasar";
 
 export default {
+  setup() {
+    function alert() {
+      $q.dialog({
+        title: "Alert",
+        message: "Some message",
+      })
+        .onOk(() => {
+          // console.log('OK')
+        })
+        .onCancel(() => {
+          // console.log('Cancel')
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        });
+    }
+    return { alert };
+  },
   data() {
     return {
       badge: "",

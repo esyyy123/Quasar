@@ -7,7 +7,7 @@
         :key="menu.menuName"
         :bind="menu.iconName"
       >
-        {{ Math.random() }}
+        <!-- {{ Math.random() }} -->
         <q-card class="menu-card" @click="moveTo(menu.route)">
           <q-card-section class="menu-icon">
             <q-icon :name="menu.iconName" size="xl"></q-icon>
@@ -35,41 +35,176 @@ export default {
           menuName: "Login",
           route: "login",
         },
-        {
-          iconName: "schedule",
-          menuName: "Scheduler",
-          route: "scheduler",
-        },
-        {
-          iconName: "logout",
-          menuName: "Logout",
-          route: "logout",
-        },
-        {
-          iconName: "refresh",
-          menuName: "refresh",
-          route: "refresh",
-        },
-        {
-          iconName: "app_registration",
-          menuName: "regis",
-          route: "regis",
-        },
-        {
-          iconName: "download_for_offline",
-          menuName: "download",
-          route: "download",
-        },
-        {
-          iconName: "create_new_folder",
-          menuName: "new folder",
-          route: "new folder",
-        },
-        {
-          iconName: "create_new_folder",
-          menuName: "new folder",
-          route: "new folder",
-        },
+        // {
+        //   iconName: "schedule",
+        //   menuName: "Scheduler",
+        //   route: "scheduler",
+        // },
+        // {
+        //   iconName: "logout",
+        //   menuName: "Logout",
+        //   route: "logout",
+        // },
+        // {
+        //   iconName: "refresh",
+        //   menuName: "refresh",
+        //   route: "refresh",
+        // },
+        // {
+        //   iconName: "schedule",
+        //   menuName: "Scheduler",
+        //   route: "scheduler",
+        // },
+        // {
+        //   iconName: "logout",
+        //   menuName: "Logout",
+        //   route: "logout",
+        // },
+        // {
+        //   iconName: "refresh",
+        //   menuName: "refresh",
+        //   route: "refresh",
+        // },
+        // {
+        //   iconName: "app_registration",
+        //   menuName: "regis",
+        //   route: "regis",
+        // },
+        // {
+        //   iconName: "logout",
+        //   menuName: "Logout",
+        //   route: "logout",
+        // },
+        // {
+        //   iconName: "refresh",
+        //   menuName: "refresh",
+        //   route: "refresh",
+        // },
+        // {
+        //   iconName: "app_registration",
+        //   menuName: "regis",
+        //   route: "regis",
+        // },
+        // {
+        //   iconName: "download_for_offline",
+        //   menuName: "download",
+        //   route: "download",
+        // },
+        // {
+        //   iconName: "create_new_folder",
+        //   menuName: "new folder",
+        //   route: "new folder",
+        // },
+        // {
+        //   iconName: "app_registration",
+        //   menuName: "regis",
+        //   route: "regis",
+        // },
+        // {
+        //   iconName: "schedule",
+        //   menuName: "Scheduler",
+        //   route: "scheduler",
+        // },
+        // {
+        //   iconName: "app_registration",
+        //   menuName: "regis",
+        //   route: "regis",
+        // },
+        // {
+        //   iconName: "download_for_offline",
+        //   menuName: "download",
+        //   route: "download",
+        // },
+        // {
+        //   iconName: "create_new_folder",
+        //   menuName: "new folder",
+        //   route: "new folder",
+        // },
+        // {
+        //   iconName: "logout",
+        //   menuName: "Logout",
+        //   route: "logout",
+        // },
+        // {
+        //   iconName: "refresh",
+        //   menuName: "refresh",
+        //   route: "refresh",
+        // },
+        // {
+        //   iconName: "app_registration",
+        //   menuName: "regis",
+        //   route: "regis",
+        // },
+        // {
+        //   iconName: "schedule",
+        //   menuName: "Scheduler",
+        //   route: "scheduler",
+        // },
+        // {
+        //   iconName: "app_registration",
+        //   menuName: "regis",
+        //   route: "regis",
+        // },
+        // {
+        //   iconName: "download_for_offline",
+        //   menuName: "download",
+        //   route: "download",
+        // },
+        // {
+        //   iconName: "create_new_folder",
+        //   menuName: "new folder",
+        //   route: "new folder",
+        // },
+        // {
+        //   iconName: "logout",
+        //   menuName: "Logout",
+        //   route: "logout",
+        // },
+        // {
+        //   iconName: "schedule",
+        //   menuName: "Scheduler",
+        //   route: "scheduler",
+        // },
+        // {
+        //   iconName: "logout",
+        //   menuName: "Logout",
+        //   route: "logout",
+        // },
+        // {
+        //   iconName: "refresh",
+        //   menuName: "refresh",
+        //   route: "refresh",
+        // },
+        // {
+        //   iconName: "app_registration",
+        //   menuName: "regis",
+        //   route: "regis",
+        // },
+        // {
+        //   iconName: "refresh",
+        //   menuName: "refresh",
+        //   route: "refresh",
+        // },
+        // {
+        //   iconName: "app_registration",
+        //   menuName: "regis",
+        //   route: "regis",
+        // },
+        // {
+        //   iconName: "download_for_offline",
+        //   menuName: "download",
+        //   route: "download",
+        // },
+        // {
+        //   iconName: "create_new_folder",
+        //   menuName: "new folder",
+        //   route: "new folder",
+        // },
+        // {
+        //   iconName: "create_new_folder",
+        //   menuName: "new folder",
+        //   route: "new folder",
+        // },
       ],
     };
   },
@@ -87,10 +222,8 @@ export default {
 
 <style scoped>
 .menu-container {
-  /* width: auto; */
-}
-
-.menu-card {
+  min-width: 200px;
+  max-width: 250px;
 }
 
 .menu-card:hover {
