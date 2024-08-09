@@ -10,5 +10,8 @@
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "AuthPage",
+  mounted() {
+    console.log("Auth Page Loaded");
+  },
 });
 </script>

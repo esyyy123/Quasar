@@ -19,5 +19,8 @@ export default {
       this.currentRoute = newPageName;
     },
   },
+  mounted() {
+    console.log("Index Page Loaded");
+  },
 };
 </script>
