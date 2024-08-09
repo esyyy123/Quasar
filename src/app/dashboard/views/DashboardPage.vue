@@ -23,6 +23,16 @@ export default {
           { text: "Name", field: "name", width: 130 },
           { text: "Age", field: "age", width: 130 },
         ],
+        events: [
+          {
+            id: 1,
+            resourceId: 6,
+            startDate: new Date(2024, 0, 1, 6),
+            endDate: new Date(2024, 0, 1, 8),
+            name: "Sport event",
+            iconCls: "b-fa b-fa-basketball-ball",
+          },
+        ],
         resources: [
           { id: 1, name: "Mike", age: 25, meta: { job: "Developer" } },
           { id: 2, name: "Linda", age: 26, meta: { job: "Developer" } },
