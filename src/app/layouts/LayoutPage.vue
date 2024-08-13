@@ -1,12 +1,12 @@
 <template>
-  <q-layout view="hHh lpR fFf" class="fullscreen">
+  <q-layout view="hHh lpR fFf">
     <header-component></header-component>
 
     <q-page-container>
       <!-- bread crumbs to be add v-if -->
-      <div class="col q-py-sm q-px-md bread-crumbs" style="align-items: center">
+      <!-- <div class="col q-py-sm q-px-md bread-crumbs" style="align-items: center">
         <bread-crumbs></bread-crumbs>
-      </div>
+      </div> -->
       <router-view></router-view>
     </q-page-container>
   </q-layout>
@@ -19,11 +19,11 @@ import HeaderComponent from "src/components/HeaderComponent.vue";
 export default {
   components: {
     HeaderComponent,
-    BreadCrumbs,
+    // BreadCrumbs,
   },
   mounted() {
     console.log("Layout Page Loaded");
-    console.log(isLoggedIn);
+    // console.log(isLoggedIn);
   },
   methods: {},
 };

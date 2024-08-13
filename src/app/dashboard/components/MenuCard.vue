@@ -8,7 +8,7 @@
         :bind="menu.iconName"
       >
         <!-- {{ Math.random() }} -->
-        <q-card class="menu-card" @click="moveTo(menu.route)">
+        <q-card class="menu-container" @click="moveTo(menu.route)">
           <q-card-section class="menu-icon">
             <q-icon :name="menu.iconName" size="xl"></q-icon>
           </q-card-section>
@@ -226,7 +226,7 @@ export default {
   max-width: 250px;
 }
 
-.menu-card:hover {
+.menu-container:hover {
   background-color: #f9f9f9;
   cursor: pointer;
 }

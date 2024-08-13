@@ -79,22 +79,22 @@ import { useQuasar } from "quasar";
 
 export default {
   setup() {
-    function alert() {
-      $q.dialog({
-        title: "Alert",
-        message: "Some message",
-      })
-        .onOk(() => {
-          // console.log('OK')
-        })
-        .onCancel(() => {
-          // console.log('Cancel')
-        })
-        .onDismiss(() => {
-          // console.log('I am triggered on both OK and Cancel')
-        });
-    }
-    return { alert };
+    // function alert() {
+    //   $q.dialog({
+    //     title: "Alert",
+    //     message: "Some message",
+    //   })
+    //     .onOk(() => {
+    //       // console.log('OK')
+    //     })
+    //     .onCancel(() => {
+    //       // console.log('Cancel')
+    //     })
+    //     .onDismiss(() => {
+    //       // console.log('I am triggered on both OK and Cancel')
+    //     });
+    // }
+    // return { alert };
   },
   data() {
     return {
