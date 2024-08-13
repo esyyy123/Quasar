@@ -157,6 +157,7 @@
       </div>
     </div>
     <!-- content core end -->
+    <FullCalendar :options="calendarOptions" />
   </q-page>
 </template>
 
@@ -175,11 +176,21 @@
 </style>
 
 <script>
+import FullCalendar from "@fullcalendar/vue3";
+import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
+
 export default {
+  components: {
+    FullCalendar,
+  },
   data() {
     return {
       isGanttActive: true,
       isListActive: false,
+      calendarOptions: {
+        plugins: [resourceTimelinePlugin],
+        schedulerLicenseKey: "XXX",
+      },
     };
   },
   mounted() {},
