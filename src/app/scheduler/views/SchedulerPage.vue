@@ -244,7 +244,7 @@
     <!-- <FullCalendar v-if="isGanttActive" :options="calendarOptions" /> -->
 
     <!-- table -->
-    <div class="q-pa-sm overflow-x scroll" style="width: 1200px">
+    <div class="q-pa-sm overflow-x scroll">
       <q-markup-table separator="separator" bordered>
         <thead>
           <tr>
