@@ -2,6 +2,16 @@
   <q-page padding>
     <div class="row flex flex-center q-mb-lg">
       <div class="col">
+        <span class="text-h6 text-bold">Production Schedule</span>
+      </div>
+      <div class="col text-right">
+        <span>Last Update, 18 July 2024, 14:00</span>
+      </div>
+    </div>
+
+    <ProductionSchedulePage @on-toggle-click="toggleReportDrawer" />
+    <!-- <div class="row flex flex-center q-mb-lg">
+      <div class="col">
         <span class="text-h5 text-bold">Production Schedule</span>
       </div>
       <div class="col text-right">
@@ -54,7 +64,7 @@
         <span>10 - 25 July 2024</span>
       </div>
     </div>
-    <!-- content core -->
+
     <div v-if="isGanttActive" class="row flex-center q-mb-md">
       <div class="col-5">
         <q-btn
@@ -131,17 +141,6 @@
     </div>
     <div v-if="isListActive" class="row flex-center q-mb-md">
       <div class="col">
-        <!-- <q-input
-          borderless
-          dense
-          debounce="500"
-          placeholder="Search..."
-          class="br-sm ll-outline"
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input> -->
         <q-btn
           icon="tune"
           class="q-mr-sm buttonScheduler"
@@ -240,10 +239,7 @@
         />
       </div>
     </div>
-    <!-- content core end -->
-    <!-- <FullCalendar v-if="isGanttActive" :options="calendarOptions" /> -->
 
-    <!-- table -->
     <div class="q-pa-sm overflow-x scroll">
       <q-markup-table separator="separator" bordered>
         <thead>
@@ -351,13 +347,7 @@
                 </q-badge>
               </div>
             </td>
-            <!-- <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td> -->
             <td colspan="4" class="text-center">DWADAWDAWDA</td>
-            <!-- <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td> -->
             <td class="text-center"></td>
             <td class="text-center"></td>
             <td class="text-center"></td>
@@ -457,8 +447,7 @@
           </tr>
         </tbody>
       </q-markup-table>
-    </div>
-    <!-- end table -->
+    </div> -->
   </q-page>
 
   <!-- drawer -->
@@ -529,6 +518,7 @@
 
 <script>
 import SearchBar from "src/components/SearchBar.vue";
+import ProductionSchedulePage from "../components/ProductionSchedulePage.vue";
 import { ref } from "vue";
 
 // import FullCalendar from "@fullcalendar/vue3";
@@ -537,6 +527,7 @@ import { ref } from "vue";
 export default {
   components: {
     SearchBar,
+    ProductionSchedulePage,
   },
   setup() {
     const menuList = [
@@ -610,6 +601,9 @@ export default {
     };
   },
   methods: {
+    trigg() {
+      console.log("click");
+    },
     activateGantt() {
       this.isGanttActive = true;
       this.isListActive = false;
