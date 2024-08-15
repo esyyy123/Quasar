@@ -37,11 +37,12 @@
       </div>
       <div class="col text-right">
         <q-btn
-          icon="event"
+          icon="event_note"
           class="q-mr-sm buttonScheduler"
           outline
           color="grey-7"
-          label="Outline Rounded"
+          label="Report"
+          @click="toggleReportDrawer"
         />
         <q-btn
           icon="fullscreen"
@@ -459,6 +460,57 @@
     </div>
     <!-- end table -->
   </q-page>
+
+  <!-- drawer -->
+  <q-drawer
+    v-model="reportDrawerOpen"
+    side="left"
+    elevated
+    overlay
+    class="q-pa-md"
+  >
+    <q-scroll-area class="fit">
+      <!-- drawer content -->
+      <div class="row flex q-mb-sm">
+        <div class="col col-md-10">
+          <span class="text-h5">Report List</span>
+        </div>
+        <div class="col col-md-2 self-center" style="text-align: end">
+          <q-icon
+            name="close"
+            size="xs"
+            color="grey"
+            @click="toggleReportDrawer"
+          ></q-icon>
+        </div>
+      </div>
+      <q-separator />
+      <div class="q-py-sm">
+        <search-bar :placeholder="WorkOrder / Model / Process"></search-bar>
+      </div>
+      <q-list>
+        <template v-for="(menuItem, index) in menuList" :key="index">
+          <q-item
+            clickable
+            :active="menuItem.label === 'Outbox'"
+            v-ripple
+            @click="moveTo(menuItem.route)"
+          >
+            <q-item-section avatar class="col col-md-2">
+              <q-icon :name="menuItem.icon" />
+            </q-item-section>
+            <q-item-section class="col col-md-8">
+              {{ menuItem.label }}
+            </q-item-section>
+            <q-item-section class="col col-md-2" style="align-items: end">
+              <q-icon name="chevron_right"></q-icon>
+            </q-item-section>
+          </q-item>
+          <q-separator :key="'sep' + index" v-if="menuItem.separator" />
+        </template>
+      </q-list>
+    </q-scroll-area>
+  </q-drawer>
 </template>
 
 <style scoped>
@@ -476,12 +528,79 @@
 </style>
 
 <script>
+import SearchBar from "src/components/SearchBar.vue";
+import { ref } from "vue";
+
 // import FullCalendar from "@fullcalendar/vue3";
 // import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 
 export default {
   components: {
-    // FullCalendar,
+    SearchBar,
+  },
+  setup() {
+    const menuList = [
+      {
+        icon: "assignment",
+        label: "Report Daily Production",
+        sublabel: "Report Daily Production",
+        route: "reports/daily-production-confirmation",
+        separator: false,
+      },
+      {
+        icon: "description",
+        label: "Schedule Summary",
+        sublabel: "Schedule Summary",
+        route: "reports/schedule-summary",
+        separator: true,
+      },
+      {
+        icon: "inbox",
+        label: "Inbox",
+        separator: true,
+      },
+      {
+        icon: "send",
+        label: "Outbox",
+        separator: false,
+      },
+      {
+        icon: "delete",
+        label: "Trash",
+        separator: false,
+      },
+      {
+        icon: "error",
+        label: "Spam",
+        separator: true,
+      },
+      {
+        icon: "settings",
+        label: "Settings",
+        separator: false,
+      },
+      {
+        icon: "feedback",
+        label: "Send Feedback",
+        separator: false,
+      },
+      {
+        icon: "help",
+        iconColor: "primary",
+        label: "Help",
+        separator: false,
+      },
+    ];
+
+    const reportDrawerOpen = ref(false);
+
+    return {
+      menuList,
+      reportDrawerOpen,
+      toggleReportDrawer() {
+        reportDrawerOpen.value = !reportDrawerOpen.value;
+      },
+    };
   },
   data() {
     return {
@@ -490,7 +609,6 @@ export default {
       isCalendarActive: false,
     };
   },
-  mounted() {},
   methods: {
     activateGantt() {
       this.isGanttActive = true;
@@ -506,6 +624,10 @@ export default {
       this.isGanttActive = false;
       this.isListActive = false;
       this.isCalendarActive = true;
+    },
+    moveTo(route) {
+      console.log(route);
+      this.$router.push(`/app/scheduler/${route}`);
     },
   },
 };

@@ -30,16 +30,16 @@ export default {
     console.log("menu card");
     return {
       menuList: [
-        {
-          iconName: "login",
-          menuName: "Login",
-          route: "login",
-        },
         // {
-        //   iconName: "schedule",
-        //   menuName: "Scheduler",
-        //   route: "scheduler",
+        //   iconName: "login",
+        //   menuName: "Login",
+        //   route: "login",
         // },
+        {
+          iconName: "schedule",
+          menuName: "Scheduler",
+          route: "scheduler",
+        },
         // {
         //   iconName: "logout",
         //   menuName: "Logout",

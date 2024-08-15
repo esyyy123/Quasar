@@ -89,13 +89,21 @@
         /> -->
       </div>
 
-      <q-drawer
-        v-model="leftDrawerOpen"
-        side="left"
-        elevated
-        style="background-color: green"
-      >
+      <q-drawer v-model="leftDrawerOpen" side="left" elevated overlay>
         <!-- drawer content -->
+        <div class="row flex q-mb-sm">
+          <div class="col col-md-10">
+            <span class="text-h5">Report List</span>
+          </div>
+          <div class="col col-md-2 self-center" style="text-align: end">
+            <q-icon
+              name="close"
+              size="xs"
+              color="grey"
+              @click="toggleLeftDrawer"
+            ></q-icon>
+          </div>
+        </div>
       </q-drawer>
     </q-toolbar>
   </q-header>

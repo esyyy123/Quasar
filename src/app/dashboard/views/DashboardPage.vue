@@ -12,11 +12,11 @@
         <menu-card></menu-card>
       </div>
     </div>
-    <q-btn @click="promptInfo">INFO</q-btn>
+    <!-- <q-btn @click="promptInfo">INFO</q-btn>
     <q-btn @click="promptConfirm">CONFIRM</q-btn>
     <q-btn @click="promptError">ERROR</q-btn>
     <q-btn @click="promptSuccess">SUCCESS</q-btn>
-    <q-btn @click="promptWarning">WARNING</q-btn>
+    <q-btn @click="promptWarning">WARNING</q-btn> -->
   </q-page>
   <q-dialog v-model="info">
     <info-modal :infoMessage="message"></info-modal>
