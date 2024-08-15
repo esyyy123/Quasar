@@ -46,10 +46,10 @@ export default {
       //     console.log("key", Object.keys(a));
       //   }),
       // ];
-      const colName = [];
+      const colName = new Set();
       // set as array
       data.map((obj, i) => {
-        colName = Object.keys(obj);
+        colName.add(Object.keys(obj));
       }),
         console.log("col name", colName);
 

@@ -528,6 +528,9 @@
 </style>
 
 <script>
+import SearchBar from "src/components/SearchBar.vue";
+import { ref } from "vue";
+
 // import FullCalendar from "@fullcalendar/vue3";
 // import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 
