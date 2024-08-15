@@ -533,12 +533,6 @@
 
 export default {
   components: {
-    // FullCalendar,
-import { ref } from "vue";
-import SearchBar from "src/components/SearchBar.vue";
-
-export default {
-  components: {
     SearchBar,
   },
   setup() {
