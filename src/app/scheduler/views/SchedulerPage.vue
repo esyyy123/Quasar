@@ -1,32 +1,107 @@
 <template>
   <q-page padding>
-    <div class="row flex flex-center q-mb-lg">
+    <div class="row q-mb-md">
       <div class="col">
-        <q-btn
-          flat
-          :color="pageProductionSchedule ? 'red-14' : 'gray-14'"
-          label="Production Schedule"
-          style="text-transform: none"
-          size="xl"
-          @click="handleBtnProductionSchedule"
-        />
-        <q-btn
-          flat
-          :color="pageReport ? 'red-14' : 'gray-14'"
-          label="Report"
-          style="text-transform: none"
-          @click="handleBtnReport"
-          size="xl"
-        />
-        <!-- <span class="text-h6 text-bold">Production Schedule</span>
-        <span class="text-h6 text-bold">Report</span> -->
+        <q-toolbar class="q-pa-none">
+          <!-- Bagian Kiri dengan Tabs -->
+          <q-btn-group unelevated>
+            <q-btn
+              flat
+              label="Production Schedule"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                'border-bottom': !pageProductionSchedule
+                  ? '1px solid #e0e0e0'
+                  : 'none',
+                color: !pageProductionSchedule ? '#585858' : '',
+              }"
+              :class="{ activePage: pageProductionSchedule }"
+              @click="handleBtnProductionSchedule"
+            />
+            <q-btn
+              flat
+              label="Report"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                'border-bottom': !pageReport ? '1px solid #e0e0e0' : 'none',
+                color: !pageReport ? '#585858' : '',
+              }"
+              :class="{ activePage: pageReport }"
+              @click="handleBtnReport"
+            />
+            <q-btn
+              flat
+              icon="expand_more"
+              :style="{ 'text-transform': 'none', 'font-size': '10px' }"
+            />
+          </q-btn-group>
+
+          <q-space />
+
+          <div
+            class="q-ml-sm"
+            :style="{
+              'text-transform': 'none',
+              'font-size': '16px',
+              color: '#585858',
+            }"
+          >
+            Last Update, 18 July 2024, 14:00
+          </div>
+        </q-toolbar>
+      </div>
+    </div>
+
+    <!-- <div class="row flex flex-center q-mb-lg">
+      <div class="col">
+        <div class="flex">
+          <q-btn
+            flat
+            :class="{ activePage: pageProductionSchedule }"
+            label="Production Schedule"
+            :style="{
+              'text-transform': 'none',
+              'border-bottom': !pageProductionSchedule
+                ? '2px solid #e0e0e0'
+                : 'none',
+              'font-size': '16px',
+            }"
+            @click="handleBtnProductionSchedule"
+          />
+          <q-btn
+            flat
+            :class="{ activePage: pageReport }"
+            label="Report"
+            :style="{
+              'text-transform': 'none',
+              'border-bottom': !pageReport ? '2px solid #e0e0e0' : 'none',
+              'margin-left': '0.5px',
+              'font-size': '16px',
+            }"
+            @click="handleBtnReport"
+            size="lg"
+          />
+          <q-btn-dropdown
+            flat
+            color="gray-14"
+            dropdown-icon="expand_more"
+            :style="{ 'font-size': '10px' }"
+            dense
+          ></q-btn-dropdown>
+        </div>
       </div>
       <div class="col text-right">
         <span>Last Update, 18 July 2024, 14:00</span>
       </div>
-    </div>
+    </div> -->
 
-    <ProductionSchedulePage @on-toggle-click="toggleReportDrawer" />
+    <ProductionSchedulePage
+      v-if="pageProductionSchedule"
+      @on-toggle-click="toggleReportDrawer"
+    />
+    <ReportPage v-if="pageReport" @on-toggle-click="toggleReportDrawer" />
     <!-- <div class="row flex flex-center q-mb-lg">
       <div class="col">
         <span class="text-h5 text-bold">Production Schedule</span>
@@ -1743,6 +1818,7 @@
 <script>
 import SearchBar from "src/components/SearchBar.vue";
 import ProductionSchedulePage from "../components/ProductionSchedulePage.vue";
+import ReportPage from "../components/ReportPage.vue";
 import { ref } from "vue";
 
 // import FullCalendar from "@fullcalendar/vue3";
@@ -1752,6 +1828,7 @@ export default {
   components: {
     SearchBar,
     ProductionSchedulePage,
+    ReportPage,
   },
   setup() {
     const menuList = [
@@ -1861,4 +1938,12 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.activePage {
+  color: #cd202e;
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+}
+</style>
