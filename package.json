@@ -19,6 +19,7 @@
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/resource": "^6.1.15",
     "@fullcalendar/resource-timeline": "^6.1.15",
+    "@fullcalendar/timegrid": "^6.1.15",
     "@fullcalendar/vue3": "^6.1.15",
     "@quasar/extras": "^1.16.4",
     "axios": "^1.5.0",
@@ -30,6 +31,7 @@
     "serve": "^14.2.3",
     "serve-static": "^1.15.0",
     "vue": "^3.4.18",
+    "vue-fullcalendar": "^1.0.9",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
