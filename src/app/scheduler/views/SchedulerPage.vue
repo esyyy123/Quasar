@@ -5,49 +5,30 @@
         <q-toolbar class="q-pa-none">
           <!-- Bagian Kiri dengan Tabs -->
           <q-btn-group unelevated>
-            <q-btn
-              flat
-              label="Production Schedule"
-              :style="{
-                'text-transform': 'none',
-                'font-size': '16px',
-                'border-bottom': !pageProductionSchedule
-                  ? '1px solid #e0e0e0'
-                  : 'none',
-                color: !pageProductionSchedule ? '#585858' : '',
-              }"
-              :class="{ activePage: pageProductionSchedule }"
-              @click="handleBtnProductionSchedule"
-            />
-            <q-btn
-              flat
-              label="Report"
-              :style="{
-                'text-transform': 'none',
-                'font-size': '16px',
-                'border-bottom': !pageReport ? '1px solid #e0e0e0' : 'none',
-                color: !pageReport ? '#585858' : '',
-              }"
-              :class="{ activePage: pageReport }"
-              @click="handleBtnReport"
-            />
-            <q-btn
-              flat
-              icon="expand_more"
-              :style="{ 'text-transform': 'none', 'font-size': '10px' }"
-            />
+            <q-btn flat label="Production Schedule" :style="{
+              'text-transform': 'none',
+              'font-size': '16px',
+              'border-bottom': !pageProductionSchedule
+                ? '1px solid #e0e0e0'
+                : 'none',
+              color: !pageProductionSchedule ? '#585858' : '',
+            }" :class="{ activePage: pageProductionSchedule }" @click="handleBtnProductionSchedule" />
+            <q-btn flat label="Report" :style="{
+              'text-transform': 'none',
+              'font-size': '16px',
+              'border-bottom': !pageReport ? '1px solid #e0e0e0' : 'none',
+              color: !pageReport ? '#585858' : '',
+            }" :class="{ activePage: pageReport }" @click="handleBtnReport" />
+            <q-btn flat icon="expand_more" :style="{ 'text-transform': 'none', 'font-size': '10px' }" />
           </q-btn-group>
 
           <q-space />
 
-          <div
-            class="q-ml-sm"
-            :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              color: '#585858',
-            }"
-          >
+          <div class="q-ml-sm" :style="{
+            'text-transform': 'none',
+            'font-size': '16px',
+            color: '#585858',
+          }">
             Last Update, 18 July 2024, 14:00
           </div>
         </q-toolbar>
@@ -97,10 +78,7 @@
       </div>
     </div> -->
 
-    <ProductionSchedulePage
-      v-if="pageProductionSchedule"
-      @on-toggle-click="toggleReportDrawer"
-    />
+    <ProductionSchedulePage v-if="pageProductionSchedule" @on-toggle-click="toggleReportDrawer" />
     <ReportPage v-if="pageReport" @on-toggle-click="toggleReportDrawer" />
     <!-- <div class="row flex flex-center q-mb-lg">
       <div class="col">
@@ -319,227 +297,197 @@
               color="grey-7"
             />
           </template>
-        </q-input>
-      </div>
-      <div class="col text-right">
-        <q-btn
-          icon="add"
-          class="q-mr-sm buttonScheduler"
-          unelevated
-          color="red-14"
-          label="Add Schedula"
-        />
-      </div>
-    </div>
+</q-input>
+</div>
+<div class="col text-right">
+  <q-btn icon="add" class="q-mr-sm buttonScheduler" unelevated color="red-14" label="Add Schedula" />
+</div>
+</div>
 
-    <div class="q-pa-sm overflow-x scroll">
-      <q-markup-table separator="separator" bordered>
-        <thead>
-          <tr>
-            <th style="width: 150px" class="text-center"></th>
-            <th class="text-center" colspan="4">Wed, 17 Jul 2024</th>
-            <th class="text-center" colspan="4">Thu, 18 Jul 2024</th>
-            <th class="text-center" colspan="4">Fri, 19 Jul 2024</th>
-            <th class="text-center" colspan="4">Sat, 20 Jul 2024</th>
-            <th class="text-center" colspan="4">Sun, 21 Jul 2024</th>
-            <th
-              style="width: 200px; max-width: 200px"
-              class="text-center"
-              colspan="4"
-            >
-              Mon, 22 Jul 2024
-            </th>
-            <th
-              style="width: 200px; max-width: 200px"
-              class="text-center"
-              colspan="4"
-            >
-              Tue, 23 Jul 2024
-            </th>
-            <th
-              style="width: 200px; max-width: 200px"
-              class="text-center"
-              colspan="4"
-            >
-              Tue, 24 Jul 2024
-            </th>
-            <th
-              style="width: 200px; max-width: 200px"
-              class="text-center"
-              colspan="4"
-            >
-              Tue, 24 Jul 2024
-            </th>
-            <th
-              style="width: 200px; max-width: 200px"
-              class="text-center"
-              colspan="4"
-            >
-              Tue, 24 Jul 2024
-            </th>
-            <th
-              style="width: 200px; max-width: 200px"
-              class="text-center"
-              colspan="4"
-            >
-              Tue, 24 Jul 2024
-            </th>
-          </tr>
-          <tr>
-            <th class="text-center"></th>
-            <th style="width: 50px; max-width: 50px" class="text-center">6</th>
-            <th style="width: 50px; max-width: 50px" class="text-center">12</th>
-            <th style="width: 50px; max-width: 50px" class="text-center">18</th>
-            <th style="width: 50px; max-width: 50px" class="text-center">24</th>
-            <th class="text-center">6</th>
-            <th class="text-center">12</th>
-            <th class="text-center">18</th>
-            <th class="text-center">24</th>
-            <th class="text-center">6</th>
-            <th class="text-center">12</th>
-            <th class="text-center">18</th>
-            <th class="text-center">24</th>
-            <th class="text-center">6</th>
-            <th class="text-center">12</th>
-            <th class="text-center">18</th>
-            <th class="text-center">24</th>
-            <th class="text-center">6</th>
-            <th class="text-center">12</th>
-            <th class="text-center">18</th>
-            <th class="text-center">24</th>
-            <th class="text-center">6</th>
-            <th class="text-center">12</th>
-            <th class="text-center">18</th>
-            <th class="text-center">24</th>
-            <th class="text-center">6</th>
-            <th class="text-center">12</th>
-            <th class="text-center">18</th>
-            <th class="text-center">24</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="text-center">
-              <div class="q-ma-sm">
-                <div>
-                  <span>AS-01 (MB)</span>
-                </div>
-                <q-avatar text-color="black" icon="lock_open" />
+<div class="q-pa-sm overflow-x scroll">
+  <q-markup-table separator="separator" bordered>
+    <thead>
+      <tr>
+        <th style="width: 150px" class="text-center"></th>
+        <th class="text-center" colspan="4">Wed, 17 Jul 2024</th>
+        <th class="text-center" colspan="4">Thu, 18 Jul 2024</th>
+        <th class="text-center" colspan="4">Fri, 19 Jul 2024</th>
+        <th class="text-center" colspan="4">Sat, 20 Jul 2024</th>
+        <th class="text-center" colspan="4">Sun, 21 Jul 2024</th>
+        <th style="width: 200px; max-width: 200px" class="text-center" colspan="4">
+          Mon, 22 Jul 2024
+        </th>
+        <th style="width: 200px; max-width: 200px" class="text-center" colspan="4">
+          Tue, 23 Jul 2024
+        </th>
+        <th style="width: 200px; max-width: 200px" class="text-center" colspan="4">
+          Tue, 24 Jul 2024
+        </th>
+        <th style="width: 200px; max-width: 200px" class="text-center" colspan="4">
+          Tue, 24 Jul 2024
+        </th>
+        <th style="width: 200px; max-width: 200px" class="text-center" colspan="4">
+          Tue, 24 Jul 2024
+        </th>
+        <th style="width: 200px; max-width: 200px" class="text-center" colspan="4">
+          Tue, 24 Jul 2024
+        </th>
+      </tr>
+      <tr>
+        <th class="text-center"></th>
+        <th style="width: 50px; max-width: 50px" class="text-center">6</th>
+        <th style="width: 50px; max-width: 50px" class="text-center">12</th>
+        <th style="width: 50px; max-width: 50px" class="text-center">18</th>
+        <th style="width: 50px; max-width: 50px" class="text-center">24</th>
+        <th class="text-center">6</th>
+        <th class="text-center">12</th>
+        <th class="text-center">18</th>
+        <th class="text-center">24</th>
+        <th class="text-center">6</th>
+        <th class="text-center">12</th>
+        <th class="text-center">18</th>
+        <th class="text-center">24</th>
+        <th class="text-center">6</th>
+        <th class="text-center">12</th>
+        <th class="text-center">18</th>
+        <th class="text-center">24</th>
+        <th class="text-center">6</th>
+        <th class="text-center">12</th>
+        <th class="text-center">18</th>
+        <th class="text-center">24</th>
+        <th class="text-center">6</th>
+        <th class="text-center">12</th>
+        <th class="text-center">18</th>
+        <th class="text-center">24</th>
+        <th class="text-center">6</th>
+        <th class="text-center">12</th>
+        <th class="text-center">18</th>
+        <th class="text-center">24</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">
+          <div class="q-ma-sm">
+            <div>
+              <span>AS-01 (MB)</span>
+            </div>
+            <q-avatar text-color="black" icon="lock_open" />
+          </div>
+        </td>
+        <td colspan="4" class="text-center">
+          <div>
+            <q-badge color="blue">
+              <div class="row">
+                <span>XM20240705-01</span>
+                <span>Factory 4 #2</span>
+                <div class="flex-break"></div>
+                <span>Completed</span>
               </div>
-            </td>
-            <td colspan="4" class="text-center">
-              <div>
-                <q-badge color="blue">
-                  <div class="row">
-                    <span>XM20240705-01</span>
-                    <span>Factory 4 #2</span>
-                    <div class="flex-break"></div>
-                    <span>Completed</span>
-                  </div>
-                </q-badge>
-              </div>
-            </td>
-            <td colspan="4" class="text-center">DWADAWDAWDA</td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-          </tr>
-          <tr>
-            <td class="text-center">
-              <div class="q-ma-sm">
-                <div>
-                  <span>AS-02 (MB)</span>
-                </div>
-                <q-avatar text-color="black" icon="lock_open" />
-              </div>
-            </td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-          </tr>
-          <tr>
-            <td class="text-center">
-              <div class="q-ma-sm">
-                <div>
-                  <span>AS-03 (MB)</span>
-                </div>
-                <q-avatar text-color="black" icon="lock_open" />
-              </div>
-            </td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-          </tr>
-        </tbody>
-      </q-markup-table>
-    </div> -->
+            </q-badge>
+          </div>
+        </td>
+        <td colspan="4" class="text-center">DWADAWDAWDA</td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+      </tr>
+      <tr>
+        <td class="text-center">
+          <div class="q-ma-sm">
+            <div>
+              <span>AS-02 (MB)</span>
+            </div>
+            <q-avatar text-color="black" icon="lock_open" />
+          </div>
+        </td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+      </tr>
+      <tr>
+        <td class="text-center">
+          <div class="q-ma-sm">
+            <div>
+              <span>AS-03 (MB)</span>
+            </div>
+            <q-avatar text-color="black" icon="lock_open" />
+          </div>
+        </td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+      </tr>
+    </tbody>
+  </q-markup-table>
+</div> -->
 
     <!-- aaa -->
     <!-- <div :class="$style.home">
@@ -1747,16 +1695,11 @@
       </div>
     </div> -->
     <!-- aaa -->
+    <CalenderSheet />
   </q-page>
 
   <!-- drawer -->
-  <q-drawer
-    v-model="reportDrawerOpen"
-    side="left"
-    elevated
-    overlay
-    class="q-pa-md"
-  >
+  <q-drawer v-model="reportDrawerOpen" side="left" elevated overlay class="q-pa-md">
     <q-scroll-area class="fit">
       <!-- drawer content -->
       <div class="row flex q-mb-sm">
@@ -1764,12 +1707,7 @@
           <span class="text-h5">Report List</span>
         </div>
         <div class="col col-md-2 self-center" style="text-align: end">
-          <q-icon
-            name="close"
-            size="xs"
-            color="grey"
-            @click="toggleReportDrawer"
-          ></q-icon>
+          <q-icon name="close" size="xs" color="grey" @click="toggleReportDrawer"></q-icon>
         </div>
       </div>
       <q-separator />
@@ -1778,12 +1716,7 @@
       </div>
       <q-list>
         <template v-for="(menuItem, index) in menuList" :key="index">
-          <q-item
-            clickable
-            :active="menuItem.label === 'Outbox'"
-            v-ripple
-            @click="moveTo(menuItem.route)"
-          >
+          <q-item clickable :active="menuItem.label === 'Outbox'" v-ripple @click="moveTo(menuItem.route)">
             <q-item-section avatar class="col col-md-2">
               <q-icon :name="menuItem.icon" />
             </q-item-section>
@@ -1805,9 +1738,11 @@
 .activeButton {
   border-bottom: 2px solid;
 }
+
 .buttonScheduler {
   border-radius: 10px;
 }
+
 .chipCircle {
   border-radius: 20%;
   width: 30px;
@@ -1820,6 +1755,13 @@ import SearchBar from "src/components/SearchBar.vue";
 import ProductionSchedulePage from "../components/ProductionSchedulePage.vue";
 import ReportPage from "../components/ReportPage.vue";
 import { ref } from "vue";
+import { Calendar } from "@fullcalendar/core";
+
+
+// import FullCalendar from '@fullcalendar/vue3'
+// // import dayGridPlugin from '@fullcalendar/daygrid'
+// import interactionPlugin from '@fullcalendar/interaction'
+
 
 // import FullCalendar from "@fullcalendar/vue3";
 // import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
