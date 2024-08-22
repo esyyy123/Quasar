@@ -64,48 +64,82 @@
       <q-toolbar class="q-pa-none">
         <!-- Bagian Kiri dengan Tabs -->
         <q-btn-group unelevated>
-          <q-btn flat icon="view_timeline" label="Gantt" :style="{
-            'text-transform': 'none',
-            'font-size': '16px',
-            color: !isGanttActive ? '#585858' : '',
-          }" :class="{ activeButton: isGanttActive }" @click="activateGantt" />
-          <q-btn flat icon="list" label="List" :style="{
-            'text-transform': 'none',
-            'font-size': '16px',
-            color: !isListActive ? '#585858' : '',
-          }" :class="{ activeButton: isListActive }" @click="activateList" />
-          <q-btn flat icon="event" label="Calendar" :style="{
-            'text-transform': 'none',
-            'font-size': '16px',
-            color: !isCalendarActive ? '#585858' : '',
-          }" :class="{ activeButton: isCalendarActive }" @click="activateCalendar" />
+          <q-btn
+            flat
+            icon="view_timeline"
+            label="Gantt"
+            :style="{
+              'text-transform': 'none',
+              'font-size': '16px',
+              color: !isGanttActive ? '#585858' : '',
+            }"
+            :class="{ activeButton: isGanttActive }"
+            @click="activateGantt"
+          />
+          <q-btn
+            flat
+            icon="list"
+            label="List"
+            :style="{
+              'text-transform': 'none',
+              'font-size': '16px',
+              color: !isListActive ? '#585858' : '',
+            }"
+            :class="{ activeButton: isListActive }"
+            @click="activateList"
+          />
+          <q-btn
+            flat
+            icon="event"
+            label="Calendar"
+            :style="{
+              'text-transform': 'none',
+              'font-size': '16px',
+              color: !isCalendarActive ? '#585858' : '',
+            }"
+            :class="{ activeButton: isCalendarActive }"
+            @click="activateCalendar"
+          />
         </q-btn-group>
 
         <q-space />
 
         <!-- Bagian Kanan dengan Tombol -->
         <q-btn-group unelevated :style="{ gap: '8px' }">
-          <q-btn flat icon="assignment" label="Report" :style="{
-            'text-transform': 'none',
-            'font-size': '16px',
-            'border-radius': '12px',
-            border: '1px solid #CED3D7',
-            color: '#585858',
-          }" />
-          <q-btn flat icon="fullscreen" label="Full Screen" :style="{
-            'text-transform': 'none',
-            'font-size': '16px',
-            'border-radius': '12px',
-            border: '1px solid #CED3D7',
-            color: '#585858',
-          }" />
+          <q-btn
+            flat
+            icon="assignment"
+            label="Report"
+            :style="{
+              'text-transform': 'none',
+              'font-size': '16px',
+              'border-radius': '12px',
+              border: '1px solid #CED3D7',
+              color: '#585858',
+            }"
+          />
+          <q-btn
+            flat
+            icon="fullscreen"
+            label="Full Screen"
+            :style="{
+              'text-transform': 'none',
+              'font-size': '16px',
+              'border-radius': '12px',
+              border: '1px solid #CED3D7',
+              color: '#585858',
+            }"
+          />
         </q-btn-group>
 
-        <div class="q-ml-sm" :style="{
-          'text-transform': 'none',
-          'font-size': '16px',
-          color: '#585858',
-        }">
+        <div
+          class="q-ml-sm"
+          :style="{
+            'text-transform': 'none',
+            'font-size': '16px',
+            color: '#585858',
+          }"
+        >
           10 - 25 July 2024
         </div>
       </q-toolbar>
@@ -117,57 +151,88 @@
       <q-toolbar class="q-pa-none">
         <div class="toolbar-left">
           <q-btn-group unelevated :style="{ gap: '8px' }">
-            <q-btn flat icon="filter_list" label="Filter" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
-            <q-btn flat icon="event" label="Date" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
+            <q-btn
+              flat
+              icon="filter_list"
+              label="Filter"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                'border-radius': '12px',
+                border: '1px solid #CED3D7',
+                color: '#585858',
+              }"
+            />
+            <q-btn
+              flat
+              icon="event"
+              label="Date"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                'border-radius': '12px',
+                border: '1px solid #CED3D7',
+                color: '#585858',
+              }"
+            />
           </q-btn-group>
           <q-btn-group unelevated>
-            <q-btn flat icon="remove" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
-            <q-btn flat label="100 %" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              color: '#585858',
-            }" />
-            <q-btn flat icon="add" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
+            <q-btn
+              flat
+              icon="remove"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                'border-radius': '12px',
+                border: '1px solid #CED3D7',
+                color: '#585858',
+              }"
+            />
+            <q-btn
+              flat
+              label="100 %"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                color: '#585858',
+              }"
+            />
+            <q-btn
+              flat
+              icon="add"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                'border-radius': '12px',
+                border: '1px solid #CED3D7',
+                color: '#585858',
+              }"
+            />
           </q-btn-group>
         </div>
 
         <q-space />
 
-        <div class="status-indicators" :style="{
-          'text-transform': 'none',
-          'font-size': '16px',
-          color: '#585858',
-        }">
-          <div v-for="status in statuses" :key="status.label" class="status-item">
-            <q-badge :style="{
-              backgroundColor: status.color,
-              width: '16px',
-              height: '16px',
-            }"></q-badge>
+        <div
+          class="status-indicators"
+          :style="{
+            'text-transform': 'none',
+            'font-size': '16px',
+            color: '#585858',
+          }"
+        >
+          <div
+            v-for="status in statuses"
+            :key="status.label"
+            class="status-item"
+          >
+            <q-badge
+              :style="{
+                backgroundColor: status.color,
+                width: '16px',
+                height: '16px',
+              }"
+            ></q-badge>
             <span class="q-ml-sm">{{ status.label }}</span>
           </div>
         </div>
@@ -179,60 +244,98 @@
     <div class="col">
       <q-toolbar class="q-pa-none">
         <div class="toolbar-left">
-          <q-input dense rounded standout placeholder="Search..." prepend-icon="search" :style="{ width: '250px' }"
-            class="q-mr-sm" />
+          <q-input
+            dense
+            rounded
+            standout
+            placeholder="Search..."
+            prepend-icon="search"
+            :style="{ width: '250px' }"
+            class="q-mr-sm"
+          />
           <q-btn-group unelevated :style="{ gap: '8px' }">
-            <q-btn flat icon="filter_list" label="Filter" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
-            <q-btn flat icon="event" label="Date" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
+            <q-btn
+              flat
+              icon="filter_list"
+              label="Filter"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                'border-radius': '12px',
+                border: '1px solid #CED3D7',
+                color: '#585858',
+              }"
+            />
+            <q-btn
+              flat
+              icon="event"
+              label="Date"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                'border-radius': '12px',
+                border: '1px solid #CED3D7',
+                color: '#585858',
+              }"
+            />
           </q-btn-group>
           <q-btn-group unelevated>
-            <q-btn flat icon="remove" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
-            <q-btn flat label="100 %" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              color: '#585858',
-            }" />
-            <q-btn flat icon="add" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
+            <q-btn
+              flat
+              icon="remove"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                'border-radius': '12px',
+                border: '1px solid #CED3D7',
+                color: '#585858',
+              }"
+            />
+            <q-btn
+              flat
+              label="100 %"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                color: '#585858',
+              }"
+            />
+            <q-btn
+              flat
+              icon="add"
+              :style="{
+                'text-transform': 'none',
+                'font-size': '16px',
+                'border-radius': '12px',
+                border: '1px solid #CED3D7',
+                color: '#585858',
+              }"
+            />
           </q-btn-group>
         </div>
 
         <q-space />
 
-        <div class="status-indicators" :style="{
-          'text-transform': 'none',
-          'font-size': '16px',
-          color: '#585858',
-        }">
-          <div v-for="status in statuses" :key="status.label" class="status-item">
-            <q-badge :style="{
-              backgroundColor: status.color,
-              width: '16px',
-              height: '16px',
-            }"></q-badge>
+        <div
+          class="status-indicators"
+          :style="{
+            'text-transform': 'none',
+            'font-size': '16px',
+            color: '#585858',
+          }"
+        >
+          <div
+            v-for="status in statuses"
+            :key="status.label"
+            class="status-item"
+          >
+            <q-badge
+              :style="{
+                backgroundColor: status.color,
+                width: '16px',
+                height: '16px',
+              }"
+            ></q-badge>
             <span class="q-ml-sm">{{ status.label }}</span>
           </div>
         </div>
@@ -241,7 +344,7 @@
   </div>
 
   <div v-if="isCalendarActive" class="">
-    <calendar-page />>
+    <calendar-page />
   </div>
 
   <!-- content core -->
@@ -656,7 +759,7 @@
 <script>
 import { ref } from "vue";
 
-import CalendarPage from "./CalendarPage.vue"
+import CalendarPage from "./CalendarPage.vue";
 import { isCancel } from "axios";
 
 export default {
@@ -704,7 +807,8 @@ export default {
 </script>
 
 <style scoped>
-.calender {}
+.calender {
+}
 
 .activeButton {
   border-bottom: 1px solid #cd202e;

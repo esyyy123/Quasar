@@ -1,21 +1,73 @@
 <template>
   <q-page class="q-pa-md">
-    <q-card>
-      <q-card-section>
-        <!-- Calendar -->
-        <div id="mycalendar">
-          <FullCalendar :options="calendarOptions" />
-        </div>
-        <!-- Dropdown for view options -->
-        <div class="dropdown-view-selector">
-          <select @change="changeView($event.target.value)">
-            <option value="dayGridMonth">Month</option>
-            <option value="timeGridWeek">Week</option>
-            <option value="timeGridDay">Day</option>
-          </select>
-        </div>
-      </q-card-section>
-    </q-card>
+    <div class="calendar-container">
+      <div class="calendar-controls">
+        <q-btn-group unelevated>
+          <q-btn flat round icon="chevron_left" @click="prev" />
+          <div class="fc-toolbar-title">{{ calendarTitle }}</div>
+          <q-btn flat round icon="chevron_right" @click="next" />
+          <q-btn-dropdown
+            :label="selectedView"
+            dropdown-icon="expand_more"
+            style="
+              text-transform: none;
+              font-size: 16px;
+              border-radius: 12px;
+              border: 1px solid rgb(206, 211, 215);
+              color: rgb(88, 88, 88);
+            "
+          >
+            <q-list>
+              <q-item
+                clickable
+                v-close-popup
+                @click="changeView('dayGridMonth')"
+              >
+                <q-item-section>
+                  <q-item-label>Monthly</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                v-close-popup
+                @click="changeView('dayGridWeek')"
+              >
+                <q-item-section>
+                  <q-item-label>Weekly</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                v-close-popup
+                @click="changeView('timeGridWeek')"
+              >
+                <q-item-section>
+                  <q-item-label>Year</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+        </q-btn-group>
+      </div>
+    </div>
+    <FullCalendar ref="fullCalendarRef" :options="calendarOptions" />
+
+    <!-- Modal -->
+    <q-dialog v-model="showModal" persistent>
+      <q-card>
+        <q-card-section>
+          <q-table
+            :rows="[selectedEvent.value]"
+            :columns="columns"
+            row-key="id"
+            flat
+          />
+        </q-card-section>
+        <q-card-actions>
+          <q-btn flat label="Close" @click="showModal = false" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -23,86 +75,197 @@
 import { defineComponent, ref, onMounted } from "vue";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid"; // Plugin untuk tampilan mingguan dan harian
+import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { Draggable } from "@fullcalendar/interaction";
+import multiMonthPlugin from "@fullcalendar/multimonth";
+import { QDialog, QCard, QCardSection, QBtn, QTable } from "quasar";
 
 export default defineComponent({
   name: "CalendarPage",
   components: {
     FullCalendar,
+    QDialog,
+    QCard,
+    QCardSection,
+    QBtn,
+    QTable,
   },
   setup() {
+    const fullCalendarRef = ref(null);
+    const selectedView = ref("Monthly");
+    const calendarTitle = ref("");
+    const showModal = ref(false);
+    const selectedEvent = ref(null);
+
     const calendarOptions = ref({
-      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+      plugins: [
+        dayGridPlugin,
+        timeGridPlugin,
+        interactionPlugin,
+        multiMonthPlugin,
+      ],
       initialView: "dayGridMonth",
       weekends: true,
       editable: true,
       droppable: true,
-      headerToolbar: {
-        left: "prev title next", // Menempatkan tombol 'prev', 'title', dan 'next' di sebelah kiri
-        center: "", // Kosongkan bagian tengah
-        right: "", // Kosongkan bagian kanan
+      headerToolbar: false,
+      views: {
+        dayGridMonth: {
+          dayHeaderContent: (args) => {
+            const dayNames = {
+              Sun: "Sunday",
+              Mon: "Monday",
+              Tue: "Tuesday",
+              Wed: "Wednesday",
+              Thu: "Thursday",
+              Fri: "Friday",
+              Sat: "Saturday",
+            };
+            return dayNames[args.text];
+          },
+        },
+        timeGridWeek: {
+          titleFormat: { year: "numeric" },
+        },
+        dayGridWeek: {
+          dayHeaderFormat: { weekday: "long" },
+        },
       },
       events: [
-        // Your event data
+        {
+          id: "event1",
+          title: "Event 1- 5h",
+          start: "2024-08-16",
+          displayEventTime: false,
+          editable: true,
+          allDay: true,
+        },
+        {
+          id: "event2",
+          title: "Event 2- 5h",
+          start: "2024-08-17",
+          displayEventTime: false,
+          color: "#a2deb1",
+          editable: true,
+          allDay: true,
+        },
+        {
+          id: "event3",
+          title: "Event 3- 5h",
+          start: "2024-08-18",
+          displayEventTime: false,
+          color: "#fdce62",
+          editable: true,
+          allDay: true,
+        },
       ],
-      dayHeaderContent: (args) => {
-        if (args.date.getDay() === 0 || args.date.getDay() === 6) {
-          return {
-            html: `<span class="red-day">${args.text}</span>`,
-          };
+      eventClick: (info) => {
+        selectedEvent.value = info.event;
+        showModal.value = true;
+      },
+      datesSet: (info) => {
+        const view = info.view;
+        if (view.type === "timeGridWeek") {
+          calendarTitle.value = new Date(view.currentStart).getFullYear();
+        } else {
+          calendarTitle.value = view.title;
         }
-        return args.text;
       },
     });
 
+    const updateTitle = (view) => {
+      if (view.type === "timeGridWeek") {
+        calendarTitle.value = new Date(view.currentStart).getFullYear();
+      } else {
+        calendarTitle.value = view.title;
+      }
+    };
+
+    const prev = () => {
+      const calendarApi = fullCalendarRef.value?.getApi();
+      if (calendarApi) {
+        calendarApi.prev();
+      }
+    };
+
+    const next = () => {
+      const calendarApi = fullCalendarRef.value?.getApi();
+      if (calendarApi) {
+        calendarApi.next();
+      }
+    };
+
     const changeView = (viewName) => {
-      const calendarApi = document
-        .getElementById("mycalendar")
-        ._calendar.getApi();
-      calendarApi.changeView(viewName);
+      if (fullCalendarRef.value) {
+        const calendarApi = fullCalendarRef.value.getApi();
+        if (calendarApi) {
+          calendarApi.changeView(viewName);
+          selectedView.value =
+            viewName === "dayGridMonth"
+              ? "Monthly"
+              : viewName === "dayGridWeek"
+              ? "Weekly"
+              : viewName === "timeGridWeek"
+              ? "Year"
+              : ""; // Default empty string or another view name if needed
+          updateTitle(calendarApi.view);
+        }
+      }
     };
 
     onMounted(() => {
-      new Draggable(document.getElementById("mycalendar"), {
-        itemSelector: ".draggable-item",
-        eventData: (eventEl) => {
-          return {
-            title: eventEl.innerText,
-            color: eventEl.classList.contains("green-item")
-              ? "#a0e4b0"
-              : "#ffd66b",
-          };
-        },
-      });
+      if (fullCalendarRef.value) {
+        const calendarApi = fullCalendarRef.value.getApi();
+        console.log("FullCalendar API initialized:", calendarApi);
+        updateTitle(calendarApi.view);
+      }
     });
+
+    const columns = [
+      { name: "id", label: "ID", align: "left", field: "id" },
+      { name: "title", label: "Title", align: "left", field: "title" },
+      { name: "start", label: "Start Date", align: "left", field: "start" },
+      { name: "end", label: "End Date", align: "left", field: "end" },
+    ];
 
     return {
       calendarOptions,
       changeView,
+      fullCalendarRef,
+      prev,
+      next,
+      selectedView,
+      calendarTitle,
+      showModal,
+      selectedEvent,
     };
   },
 });
 </script>
 
 <style>
+:root {
+  --fc-button-hover-bg-color: #fff;
+  --fc-button-active-bg-color: #ffff;
+}
 .fc-toolbar-chunk {
   display: flex;
   justify-content: flex-start; /* Align toolbar to the left */
   align-items: center;
 }
 /* Style untuk menempatkan dropdown tepat di sebelah tombol next */
-.dropdown-view-selector {
-  display: inline-block;
-  margin-left: 10px; /* Jarak antara dropdown dan tombol next */
-  vertical-align: middle; /* Pastikan dropdown sejajar dengan tombol */
+/* Ensure the toolbar is using flexbox */
+.fc-toolbar {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  justify-content: flex-start; /* Align items horizontally to the left */
 }
 
-.dropdown-view-selector select {
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+/* Remove default margins and paddings from buttons */
+.fc-prev-button,
+.fc-next-button {
+  margin: 0;
+  padding: 0;
 }
 
 .fc .fc-button-primary {
@@ -111,25 +274,17 @@ export default defineComponent({
   color: #b0b0b0;
 }
 
-/* Gaya untuk tombol prev dan next saat hover */
-.fc-prev-button:hover,
-.fc-next-button:hover {
-  background-color: #e0e0e0; /* Warna latar belakang saat hover (abu-abu muda) */
-  color: #f2eded; /* Warna teks saat hover */
+.fc-scrollgrid-section
+  .fc-scrollgrid-section-body
+  .fc-scrollgrid-section-liquid {
+  height: 100px;
 }
 
-.fc-toolbar-title {
-  margin: 0 10px; /* Jarak antara title dan tombol prev/next */
-}
-
-/* Optional: Adjust the font size and weight of the title */
+/* title  */
 .fc-toolbar-title {
   font-size: 16px;
   font-weight: bold;
-}
-
-.fc-button-group {
-  margin-left: 20px; /* Jarak antara group toggle dan title */
+  margin-top: 10px;
 }
 
 /* Style for draggable items */
@@ -149,7 +304,7 @@ export default defineComponent({
   position: absolute;
   top: 50px; /* Sesuaikan posisi dengan kebutuhan */
   left: 0; /* Sesuaikan posisi dengan kebutuhan */
-  z-index: 1; /* Pastikan berada di bawah angka tanggal */
+  z-index: 3; /* Pastikan berada di bawah angka tanggal */
   background-color: #fff; /* Tambahkan latar belakang jika diperlukan */
   border: 1px solid #ccc; /* Tambahkan border jika diperlukan */
 }
@@ -220,11 +375,47 @@ export default defineComponent({
   padding-left: 10px; /* Tambahkan padding kiri */
 }
 
-/* Make sure all header cells have the same height */
+/* Menghilangkan border, outline, dan shadow pada tombol prev dan next di semua keadaan */
+.fc-prev-button,
+.fc-next-button {
+  border: none !important; /* Menghilangkan border default */
+  outline: none !important; /* Menghilangkan outline default */
+  box-shadow: none !important; /* Menghilangkan shadow default */
+}
+
+.fc-prev-button:hover .fc-icon,
+.fc-next-button:hover .fc-icon {
+  color: #909090 !important; /* Ganti dengan warna yang diinginkan, misalnya abu-abu */
+}
+
+.fc-prev-button:hover,
+.fc-next-button:hover {
+  background-color: white;
+}
+.fc-prev-button:hover,
+.fc-next-button:hover,
+.fc-prev-button:focus,
+.fc-next-button:focus,
+.fc-prev-button:active,
+.fc-next-button:active,
+.fc-prev-button:focus-visible,
+.fc-next-button:focus-visible {
+  border: none !important; /* Menghilangkan border saat hover, fokus, dan aktif */
+  outline: none !important; /* Menghilangkan outline saat hover, fokus, dan aktif */
+  box-shadow: none !important; /* Menghilangkan shadow saat hover, fokus, dan aktif */
+}
+
+.fc .fc-button-primary.fc-prev-button,
+.fc .fc-button-primary.fc-next-button {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .fc-col-header-cell {
   text-align: left;
-  height: 50px; /* Default height for all header cells */
-  line-height: 50px; /* Vertical alignment */
+  height: 50px;
+  line-height: 50px;
 }
 
 #mycalendar {
