@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import multiMonthPlugin from "@fullcalendar/multimonth";
-import { QDialog, QCard, QCardSection, QBtn, QTable } from "quasar";
+import { QDialog, QDate, QCard, QCardSection, QBtn, QTable } from "quasar";
 
 export default defineComponent({
   name: "CalendarPage",
@@ -26,38 +26,20 @@ export default defineComponent({
     const selectedBrand = ref("all customer");
     const eventsData = ref([]);
     const selectedLabel = ref("");
+    const multipleCustomer = ref([]);
+    const showDatePicker = ref(false);
+    const date = ref(calendarTitle)
+
+
     const columns = [
       { name: "id", label: "No", align: "left", field: "id" },
       { name: "customer", label: "Customer", align: "left", field: "customer" },
       { name: "brand", label: "CKD", align: "left", field: "CKD" },
       { name: "start", label: "Non CKD", align: "left", field: "NONCKD" },
     ];
-    const multipleCustomer = ref([]);
-    const addDatesToColumns = () => {
-      const calendarApi = fullCalendarRef.value?.getApi();
-      if (calendarApi) {
-        setTimeout(() => {
-          const dayCells = document.querySelectorAll(".fc-daygrid-day");
-          dayCells.forEach((cell) => {
-            const date = cell.getAttribute("data-date");
-            if (date) {
-              const formattedDate = new Date(date).toLocaleDateString("id-ID", {
-                day: "2-digit",
-              });
-              let dateElement = cell.querySelector(".custom-date");
-              if (!dateElement) {
-                dateElement = document.createElement("div");
-                dateElement.classList.add("custom-date");
-                cell.prepend(dateElement);
-              }
-              dateElement.innerText = formattedDate;
-            }
-          });
-        }, 100);
-      }
-    };
+
     const optionsCustomer = [
-      { label: "All Customer", value: "{xiaomi},{asus},{vivo},{oppo}" },
+      { label: "All Customer", value: "all_customer" },
       { label: "xiaomi", value: "xiaomi" },
       { label: "asus", value: "asus" },
       { label: "vivo", value: "vivo" },
@@ -67,12 +49,10 @@ export default defineComponent({
     // Watcher to handle customer selection
     watch(multipleCustomer, (newVal) => {
       if (newVal.includes("all_customer")) {
-        // If "All Customer" is selected, select all individual customers
         multipleCustomer.value = optionsCustomer
           .filter((item) => item.value !== "all_customer")
           .map((item) => item.value);
       } else {
-        // Otherwise, update the selectedLabel with the selected customers
         selectedLabel.value = optionsCustomer
           .filter((item) => multipleCustomer.value.includes(item.value))
           .map((item) => item.label)
@@ -146,20 +126,21 @@ export default defineComponent({
       eventClick: (info) => {
         selectedEvent.value = info.event
           ? {
-              id: info.event.id,
-              customer: info.event.extendedProps.customer,
-              start: info.event.start,
-              CKD: info.event.extendedProps.CKD,
-              NONCKD: info.event.extendedProps.NONCKD,
-              brand: info.event.title,
-              end: info.event.end,
-            }
+            id: info.event.id,
+            customer: info.event.extendedProps.customer,
+            start: info.event.start,
+            CKD: info.event.extendedProps.CKD,
+            NONCKD: info.event.extendedProps.NONCKD,
+            brand: info.event.title,
+            end: info.event.end,
+          }
           : null;
         showModal.value = true;
       },
       datesSet: (info) => {
         const view = info.view;
         updateTitle(view);
+
         if (view.type === "dayGridWeek") {
           addDatesToColumns();
         } else {
@@ -173,18 +154,60 @@ export default defineComponent({
       contentHeight: "75vh",
     });
 
-    const updateTitle = (view) => {
-      if (view.type === "timeGridWeek") {
-        calendarTitle.value = new Date(view.currentStart).getFullYear();
-      } else {
-        calendarTitle.value = view.title;
+    const addDatesToColumns = () => {
+      const calendarApi = fullCalendarRef.value?.getApi();
+      if (calendarApi) {
+        setTimeout(() => {
+          const dayCells = document.querySelectorAll(".fc-daygrid-day");
+          dayCells.forEach((cell) => {
+            const date = cell.getAttribute("data-date");
+            if (date) {
+              const formattedDate = new Date(date).toLocaleDateString("id-ID", {
+                day: "2-digit",
+              });
+              let dateElement = cell.querySelector(".custom-date");
+              if (!dateElement) {
+                dateElement = document.createElement("div");
+                dateElement.classList.add("custom-date");
+                cell.prepend(dateElement);
+              }
+              dateElement.innerText = formattedDate;
+            }
+          });
+        }, 100);
       }
+    };
+
+    const showDate = () => {
+      showDatePicker.value = true;
+
+    };
+
+    const isMonthlySelected = () => {
+      this.isMonthlySelected = true
+    }
+
+    const ondateSelected = () => {
+      showDatePicker.value = false;
+    };
+
+    const updateTitle = (view) => {
+      const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+      const start = new Date(view.currentStart);
+      const monthName = monthNames[start.getMonth()];
+      const year = start.getFullYear();
+
+      calendarTitle.value = `${monthName} ${year}`;
     };
 
     const prev = () => {
       const calendarApi = fullCalendarRef.value?.getApi();
       if (calendarApi) {
         calendarApi.prev();
+        updateTitle(calendarApi.view);
       }
     };
 
@@ -192,6 +215,7 @@ export default defineComponent({
       const calendarApi = fullCalendarRef.value?.getApi();
       if (calendarApi) {
         calendarApi.next();
+        updateTitle(calendarApi.view);
       }
     };
 
@@ -202,12 +226,12 @@ export default defineComponent({
           calendarApi.changeView(viewName);
           selectedView.value =
             viewName === "dayGridMonth"
-              ? "Monthly"
+              ? "Daily"
               : viewName === "dayGridWeek"
-              ? "Weekly"
-              : viewName === "timeGridWeek"
-              ? "Year"
-              : "";
+                ? "Weekly"
+                : viewName === "timeGridWeek"
+                  ? "Monthly"
+                  : "";
           updateTitle(calendarApi.view);
           loadEventsIntoTable();
         }
@@ -260,10 +284,15 @@ export default defineComponent({
       eventsData,
       optionsCustomer,
       multipleCustomer,
+      showDate,
+      ondateSelected,
+      date,
     };
   },
 });
 </script>
+
+
 
 <template>
   <q-page class="q-pa-md">
@@ -271,84 +300,59 @@ export default defineComponent({
       <div class="calendar-controls">
         <q-btn-group unelevated>
           <q-btn flat round icon="chevron_left" @click="prev" />
-          <div id="changingYear" class="fc-toolbar-title">
+          <q-btn @click="showDate" class="fc-toolbar-title">
             {{ calendarTitle }}
-          </div>
+          </q-btn>
+          <q-popup-proxy v-model="showDatePicker" transition-show="none" transition-hide="none">
+            <q-date ref="rDate" default-view="Months" v-model="date" years-in-month-view emit-immediately minimal
+              mask="YYYY/MM" @update:model-value="$refs.rDate.setView('Months')" />
+          </q-popup-proxy>
           <q-btn flat round icon="chevron_right" @click="next" />
-          <q-btn-dropdown
-            :label="selectedView"
-            dropdown-icon="expand_more"
-            style="
+          <q-btn-dropdown :label="selectedView" dropdown-icon="expand_more" style="
               text-transform: none;
               font-size: 16px;
               border-radius: 12px;
               border: 1px solid rgb(206, 211, 215);
               color: rgb(88, 88, 88);
               margin-left: 20px;
-            "
-          >
+            ">
             <q-list>
-              <q-item
-                clickable
-                v-close-popup
-                @click="changeView('dayGridMonth')"
-              >
+              <q-item clickable v-close-popup @click="changeView('dayGridMonth')">
                 <q-item-section>
-                  <q-item-label>Monthly</q-item-label>
+                  <q-item-label>Daily</q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item
-                clickable
-                v-close-popup
-                @click="changeView('dayGridWeek')"
-              >
+              <q-item clickable v-close-popup @click="changeView('dayGridWeek')">
                 <q-item-section>
                   <q-item-label>Weekly</q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item
-                clickable
-                v-close-popup
-                @click="changeView('timeGridWeek')"
-              >
+              <q-item clickable v-close-popup @click="changeView('timemontGridWeek')">
                 <q-item-section>
-                  <q-item-label>Year</q-item-label>
+                  <q-item-label>Monthly</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
           </q-btn-dropdown>
 
-          <q-btn-dropdown
-            :label="selectedLabel || 'select customer'"
-            dropdown-icon="expand_more"
-            style="
+          <q-btn-dropdown :label="selectedLabel || 'all customer'" dropdown-icon="expand_more" style="
               text-transform: none;
               font-size: 16px;
               border-radius: 12px;
               border: 1px solid rgb(206, 211, 215);
               color: rgb(88, 88, 88);
               margin-left: 20px;
-            "
-          >
+            ">
             <q-list>
-              <q-select
-                filled
-                v-model="multipleCustomer"
-                use-input
-                use-chips
-                multiple
-                input-debounce="0"
-                :options="optionsCustomer"
-                dropdown-icon="expand_more"
-                style="
+              <q-select filled v-model="multipleCustomer" use-input use-chips multiple input-debounce="0"
+                :options="optionsCustomer" dropdown-icon="expand_more" style="
                   text-transform: none;
                   font-size: 16px;
                   border-radius: 12px;
                   border: 1px solid rgb(206, 211, 215);
                   color: rgb(88, 88, 88);
                   width: 300px;
-                "
-              />
+                " />
             </q-list>
           </q-btn-dropdown>
         </q-btn-group>
@@ -356,6 +360,13 @@ export default defineComponent({
     </div>
     <div class="q-pt-md">
       <FullCalendar ref="fullCalendarRef" :options="calendarOptions" />
+      <div v-if="isMonthlySelected" class="row">
+        <q-page-container>
+          <div class="q-gutter-lg">
+            <q-btn color="red" label="Button" v-for="n in 7" :key="`lg-${n}`" />
+          </div>
+        </q-page-container>
+      </div>
     </div>
     <!-- Modal Bar -->
     <q-dialog v-model="showModal" persistent>
@@ -363,13 +374,7 @@ export default defineComponent({
         <q-card-section>
           <div class="container-btn-title-modal">
             <div class="text-subtitle1 text-weight-bold q-pt-sm">Details</div>
-            <q-btn
-              class="close-btn"
-              dense
-              flat
-              icon="close"
-              @click="showModal = false"
-            />
+            <q-btn class="close-btn" dense flat icon="close" @click="showModal = false" />
           </div>
           <hr class="solid" />
           <div class="container-column">
@@ -382,16 +387,8 @@ export default defineComponent({
               <div class="text-weight-bold text-h6">450</div>
             </div>
           </div>
-          <q-table
-            class="custom-thead-bg"
-            table-style="font-family: roboto; font-weight: bold;"
-            :rows="eventsData"
-            hide-bottom
-            :columns="columns"
-            :rows-per-page-options="[]"
-            row-key="id"
-            flat
-          />
+          <q-table class="custom-thead-bg" table-style="font-family: roboto; font-weight: bold;" :rows="eventsData"
+            hide-bottom :columns="columns" :rows-per-page-options="[]" row-key="id" flat />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -399,6 +396,8 @@ export default defineComponent({
 </template>
 
 <style>
+/* background-color: #f9ebec; */
+
 .fc-dayGridWeek-view table tbody .fc-scroller.fc-scroller-liquid-absolute {
   overflow: hidden !important;
 }
@@ -420,18 +419,23 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
 }
+
 /* event bar sizing */
 .fc-event {
-  height: 30px; /* Atur tinggi event */
-  line-height: 30px; /* Pastikan teks berada di tengah */
-  font-size: 25px;
+  height: 31px;
+  /* Atur tinggi event */
+  line-height: 31px;
+  /* Pastikan teks berada di tengah */
+  font-size: 24px;
   font-weight: bold;
   border-radius: 20px;
   color: black !important;
 }
+
 /* force chnging color event bar  */
 .fc-event-title-container {
-  color: black; /* Ubah warna teks dalam judul event */
+  color: black;
+  /* Ubah warna teks dalam judul event */
 }
 
 .container-btn-title-modal {
@@ -485,6 +489,7 @@ export default defineComponent({
   font-size: 16px;
   font-weight: bold;
   margin-top: 10px;
+  text-transform: capitalize;
 }
 
 /* Style for draggable items */
@@ -549,7 +554,8 @@ export default defineComponent({
 }
 
 /* CSS tambahan untuk responsivitas */
-@media (max-width: 600px) {
+@media (max-0width: 600px) {
+
   .fc-col-header-cell.fc-day-sun,
   .fc-col-header-cell.fc-day-sat {
     background-color: #ffebee;
@@ -562,6 +568,7 @@ export default defineComponent({
 }
 
 @media (min-width: 601px) and (max-width: 1024px) {
+
   .fc-col-header-cell.fc-day-sun,
   .fc-col-header-cell.fc-day-sat {
     background-color: #f9ebec;
@@ -574,6 +581,7 @@ export default defineComponent({
 }
 
 @media (min-width: 1025px) {
+
   .fc-col-header-cell.fc-day-sun,
   .fc-col-header-cell.fc-day-sat {
     background-color: #fce4ec;
@@ -596,13 +604,16 @@ export default defineComponent({
 
 .fc-daygrid-day-top {
   display: flex;
-  flex-direction: column-reverse; /* Mengatur elemen dari bawah ke atas */
-  align-items: flex-start; /* Menempatkan elemen ke sisi kiri */
+  flex-direction: column-reverse;
+  /* Mengatur elemen dari bawah ke atas */
+  align-items: flex-start;
+  /* Menempatkan elemen ke sisi kiri */
   text-align: left !important;
 }
 
 .fc-daygrid-day-number {
-  text-align: left; /* Mengatur teks ke kiri */
+  text-align: left;
+  /* Mengatur teks ke kiri */
   justify-content: flex-start !important;
 }
 
