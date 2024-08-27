@@ -20,16 +20,16 @@ export default defineComponent({
   setup() {
     const fullCalendarRef = ref(null);
     const selectedView = ref("Monthly");
+    const isMonthlySelected = ref(false);
     const calendarTitle = ref("");
     const showModal = ref(false);
     const selectedEvent = ref(null);
     const selectedBrand = ref("all customer");
     const eventsData = ref([]);
     const selectedLabel = ref("");
-    const multipleCustomer = ref([]);
     const showDatePicker = ref(false);
-    const date = ref(calendarTitle)
-
+    const date = ref(calendarTitle);
+    const selectedCustomers = ref([]);
 
     const columns = [
       { name: "id", label: "No", align: "left", field: "id" },
@@ -39,26 +39,12 @@ export default defineComponent({
     ];
 
     const optionsCustomer = [
-      { label: "All Customer", value: "all_customer" },
+      { label: "All Customer", value: "all" },
       { label: "xiaomi", value: "xiaomi" },
       { label: "asus", value: "asus" },
       { label: "vivo", value: "vivo" },
       { label: "oppo", value: "oppo" },
     ];
-
-    // Watcher to handle customer selection
-    watch(multipleCustomer, (newVal) => {
-      if (newVal.includes("all_customer")) {
-        multipleCustomer.value = optionsCustomer
-          .filter((item) => item.value !== "all_customer")
-          .map((item) => item.value);
-      } else {
-        selectedLabel.value = optionsCustomer
-          .filter((item) => multipleCustomer.value.includes(item.value))
-          .map((item) => item.label)
-          .join(", ");
-      }
-    });
 
     const calendarOptions = ref({
       plugins: [
@@ -178,14 +164,22 @@ export default defineComponent({
       }
     };
 
-    const showDate = () => {
-      showDatePicker.value = true;
-
+    // Function to handle selection
+    const onSelectCustomer = (val) => {
+      if (val.includes("selectAll")) {
+        // If "Select All" is selected, select all customers and remove "Select All" from the selected list
+        selectedCustomers.value = optionsCustomer.value
+          .filter((option) => option.value !== "selectAll")
+          .map((option) => option.value);
+      } else {
+        // If "Select All" is not selected, just update the selected customers
+        selectedCustomers.value = val;
+      }
     };
 
-    const isMonthlySelected = () => {
-      this.isMonthlySelected = true
-    }
+    const showDate = () => {
+      showDatePicker.value = true;
+    };
 
     const ondateSelected = () => {
       showDatePicker.value = false;
@@ -193,13 +187,22 @@ export default defineComponent({
 
     const updateTitle = (view) => {
       const monthNames = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
       ];
       const start = new Date(view.currentStart);
       const monthName = monthNames[start.getMonth()];
       const year = start.getFullYear();
-
       calendarTitle.value = `${monthName} ${year}`;
     };
 
@@ -220,22 +223,36 @@ export default defineComponent({
     };
 
     const changeView = (viewName) => {
-      if (fullCalendarRef.value) {
-        const calendarApi = fullCalendarRef.value.getApi();
-        if (calendarApi) {
-          calendarApi.changeView(viewName);
-          selectedView.value =
-            viewName === "dayGridMonth"
-              ? "Daily"
-              : viewName === "dayGridWeek"
-                ? "Weekly"
-                : viewName === "timeGridWeek"
-                  ? "Monthly"
+      if (viewName === "Monthly") {
+        isMonthlySelected.value = true; // Show custom Monthly view
+        selectedView.value = "Monthly"; // Update label to reflect the selected view
+      } else {
+        isMonthlySelected.value = false; // Hide custom Monthly view
+        if (fullCalendarRef.value) {
+          const calendarApi = fullCalendarRef.value.getApi();
+          if (calendarApi) {
+            calendarApi.changeView(viewName);
+            selectedView.value =
+              viewName === "dayGridMonth"
+                ? "Daily"
+                : viewName === "dayGridWeek"
+                  ? "Weekly"
                   : "";
-          updateTitle(calendarApi.view);
-          loadEventsIntoTable();
+            updateTitle(calendarApi.view);
+            loadEventsIntoTable();
+          }
         }
       }
+    };
+
+    const selectAllCustomers = () => {
+      selectedCustomers.value = optionsCustomer.map((option) => option.value);
+      selectedLabel.value = "Select All";
+    };
+
+    const deselectAllCustomers = () => {
+      selectedCustomers.value = [];
+      selectedLabel.value = "";
     };
 
     const loadEventsIntoTable = () => {
@@ -283,15 +300,18 @@ export default defineComponent({
       selectedLabel,
       eventsData,
       optionsCustomer,
-      multipleCustomer,
       showDate,
       ondateSelected,
       date,
+      isMonthlySelected,
+      selectedCustomers,
+      onSelectCustomer,
+      selectAllCustomers,
+      deselectAllCustomers,
     };
   },
 });
 </script>
-
 
 
 <template>
@@ -327,7 +347,7 @@ export default defineComponent({
                   <q-item-label>Weekly</q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item clickable v-close-popup @click="changeView('timemontGridWeek')">
+              <q-item clickable v-close-popup @click="changeView('Monthly')">
                 <q-item-section>
                   <q-item-label>Monthly</q-item-label>
                 </q-item-section>
@@ -335,7 +355,7 @@ export default defineComponent({
             </q-list>
           </q-btn-dropdown>
 
-          <q-btn-dropdown :label="selectedLabel || 'all customer'" dropdown-icon="expand_more" style="
+          <q-btn-dropdown :label="selectedLabel || 'All Customer'" dropdown-icon="expand_more" style="
               text-transform: none;
               font-size: 16px;
               border-radius: 12px;
@@ -344,28 +364,48 @@ export default defineComponent({
               margin-left: 20px;
             ">
             <q-list>
-              <q-select filled v-model="multipleCustomer" use-input use-chips multiple input-debounce="0"
-                :options="optionsCustomer" dropdown-icon="expand_more" style="
-                  text-transform: none;
-                  font-size: 16px;
-                  border-radius: 12px;
-                  border: 1px solid rgb(206, 211, 215);
-                  color: rgb(88, 88, 88);
-                  width: 300px;
-                " />
+              <q-item clickable @click="selectAllCustomers">
+                <q-item-section>
+                  <q-item-label>Select All</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item clickable @click="deselectAllCustomers">
+                <q-item-section>
+                  <q-item-label>Deselect All</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section>
+                  <q-select filled v-model="selectedCustomers" use-input use-chips multiple input-debounce="0"
+                    :options="optionsCustomer" option-value="value" dropdown-icon="expand_more"
+                    @update:model-value="onSelectCustomer" style="
+                      text-transform: none;
+                      font-size: 16px;
+                      border-radius: 12px;
+                      border: 1px solid rgb(206, 211, 215);
+                      color: rgb(88, 88, 88);
+                      width: 300px;
+                    " />
+                </q-item-section>
+              </q-item>
             </q-list>
           </q-btn-dropdown>
         </q-btn-group>
       </div>
     </div>
     <div class="q-pt-md">
-      <FullCalendar ref="fullCalendarRef" :options="calendarOptions" />
-      <div v-if="isMonthlySelected" class="row">
+      <div v-if="isMonthlySelected">
         <q-page-container>
-          <div class="q-gutter-lg">
-            <q-btn color="red" label="Button" v-for="n in 7" :key="`lg-${n}`" />
+          <div class="q-gutter-lg q-mt-lg row justify-center items-center">
+            <q-btn color="red" label="Button" v-for="n in 6" :key="`lg-${n}`" />
+          </div>
+          <div class="q-gutter-lg q-mt-sm row justify-center items-center">
+            <q-btn color="red" label="Button" v-for="n in 6" :key="`lg-${n}`" />
           </div>
         </q-page-container>
+      </div>
+      <div v-else>
+        <FullCalendar ref="fullCalendarRef" :options="calendarOptions" />
       </div>
     </div>
     <!-- Modal Bar -->

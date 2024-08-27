@@ -176,68 +176,7 @@
   </div>
 
   <div v-if="isListActive" class="row">
-    <div class="col">
-      <q-toolbar class="q-pa-none">
-        <div class="toolbar-left">
-          <q-input dense rounded standout placeholder="Search..." prepend-icon="search" :style="{ width: '250px' }"
-            class="q-mr-sm" />
-          <q-btn-group unelevated :style="{ gap: '8px' }">
-            <q-btn flat icon="filter_list" label="Filter" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
-            <q-btn flat icon="event" label="Date" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
-          </q-btn-group>
-          <q-btn-group unelevated>
-            <q-btn flat icon="remove" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
-            <q-btn flat label="100 %" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              color: '#585858',
-            }" />
-            <q-btn flat icon="add" :style="{
-              'text-transform': 'none',
-              'font-size': '16px',
-              'border-radius': '12px',
-              border: '1px solid #CED3D7',
-              color: '#585858',
-            }" />
-          </q-btn-group>
-        </div>
-
-        <q-space />
-
-        <div class="status-indicators" :style="{
-          'text-transform': 'none',
-          'font-size': '16px',
-          color: '#585858',
-        }">
-          <div v-for="status in statuses" :key="status.label" class="status-item">
-            <q-badge :style="{
-              backgroundColor: status.color,
-              width: '16px',
-              height: '16px',
-            }"></q-badge>
-            <span class="q-ml-sm">{{ status.label }}</span>
-          </div>
-        </div>
-      </q-toolbar>
-    </div>
+    <list-page />
   </div>
 
   <div v-if="isCalendarActive" class="">
@@ -655,13 +594,14 @@
 
 <script>
 import { ref } from "vue";
-
+import ListPage from "./ListPage.vue";
 import CalendarPage from "./CalendarPage.vue";
 import { isCancel } from "axios";
 
 export default {
   components: {
     CalendarPage,
+    ListPage,
   },
   data() {
     return {
