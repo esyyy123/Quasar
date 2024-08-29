@@ -2,10 +2,12 @@
   <q-toolbar class="q-pa-none">
     <div class="toolbar-left">
       <q-btn-group unelevated :style="{ gap: '8px' }">
-        <q-btn flat icon="search" label="Search" :style="{
+        <q-btn flat icon="search" label="Search WorkOrder/Model/Process" :style="{
           'text-transform': 'none',
           'font-size': '16px',
           'border-radius': '12px',
+          'padding-left': '15px',
+          'align-items': 'center',
           height: '20px',
           border: '1px solid #CED3D7',
           color: '#585858',
@@ -25,17 +27,10 @@
           color: '#585858',
         }" />
 
-         <!-- Date Popup -->
-         <q-popup-proxy v-model="datePopup" ref="datePopup" :target="$refs.dateButton" transition-show="scale" transition-hide="scale">
-          <q-card>
-            <q-date v-model="selectedDate" />
-            <q-card-actions align="right">
-              <q-btn flat label="Cancel" color="negative" @click="toggleDatePopup" />
-              <q-btn label="OK" color="primary" @click="confirmDate" />
-            </q-card-actions>
-          </q-card>
+        <!-- Date Popup -->
+        <q-popup-proxy v-if="datePopup" ref="datePopup" transition-show="scale" transition-hide="scale">
+          <q-date v-model="selectedDate" minimal @input="onDateSelect" />
         </q-popup-proxy>
-
       </q-btn-group>
       <q-btn-group unelevated>
         <q-btn flat icon="remove" @click="zoomOut" :style="{
@@ -45,11 +40,12 @@
           border: '1px solid #CED3D7',
           color: '#585858',
         }" />
-        <q-btn flat label="100%" :style="{
+        <!-- Menampilkan level zoom dalam persen -->
+        <q-btn flat :style="{
           'text-transform': 'none',
           'font-size': '16px',
           color: '#585858',
-        }" />
+        }">{{ zoomLevel }}%</q-btn>
         <q-btn flat icon="add" @click="zoomIn" :style="{
           'text-transform': 'none',
           'font-size': '16px',
@@ -77,11 +73,49 @@
       </div>
     </div>
   </q-toolbar>
-   <!-- Contoh elemen yang akan di-zoom -->
-   <div :style="{ transform: `scale(${zoomLevel})` }">
-    <!-- Konten Anda yang akan di-zoom -->
+  <!-- Contoh elemen yang akan di-zoom -->
+  <!-- <div :style="{ transform: `scale(${zoomLevel / 100})` }">
     <p>Ini adalah contoh konten yang akan di-zoom.</p>
-  </div>
+  </div> -->
+
+  <!-- <List Page> -->
+  <template>
+    <q-page-container>
+      <div class="q-pa-md">
+        <!-- Header Row -->
+        <div class="row bordered">
+          <div class="col-auto q-pa-sm">
+            <!-- Panah ke kanan -->
+            <q-icon name="chevron-right" />
+          </div>
+          <div class="col q-pa-sm">
+            Work Order / Model
+          </div>
+          <div class="col q-pa-sm">
+            Prosess
+          </div>
+        </div>
+
+        <!-- Expandable Rows -->
+        <q-list bordered separator>
+          <q-expansion-item v-for="(item, index) in tableData" :key="index" dense expand-separator>
+            <template v-slot:header>
+              <div class="row q-pa-sm">
+                <div class="col">
+                  {{ item.workOrder }}
+                </div>
+              </div>
+            </template>
+
+            <q-item v-for="(process, index) in item.processes" :key="index" class="q-pa-sm">
+              <q-item-section>{{ process }}</q-item-section>
+            </q-item>
+          </q-expansion-item>
+        </q-list>
+      </div>
+    </q-page-container>
+  </template>
+
 
 
 
@@ -100,27 +134,28 @@
               <div class="col q-mr-sm">
                 <div class="form-group">
                   <div>From</div>
-                  <q-input class="filter-all" filled v-model="filterData.from" type="date" />
+                  <q-input class="filter-all date-input" filled v-model="filterData.from" type="date" />
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <div>To</div>
-                  <q-input class="filter-all" filled v-model="filterData.to" type="date" />
+                  <q-input class="filter-all date-input" filled v-model="filterData.to" type="date" />
                 </div>
               </div>
             </div>
           </div>
           <div class="form-group">
             <div>Area</div>
-            <q-select class="filter-all" filled label="Select Area" :options="optionsAreas">
-              <template v-slot:option="{ itemProps, opt, selected }">
+            <q-select class="filter-all" filled v-model="modelMultiple" multiple :options="optionsAreas" use-chips
+              stack-label label="Select Area">
+              <template v-slot:option="{ itemProps, opt, selected, toggleOption }">
                 <q-item v-bind="itemProps">
                   <q-item-section>
                     <q-item-label>{{ opt.label }}</q-item-label>
                   </q-item-section>
                   <q-item-section side>
-                    <q-checkbox :model-value="selected" @update:model-value="filterData.area" />
+                    <q-checkbox :model-value="selected" @update:model-value="toggleOption(opt)" />
                   </q-item-section>
                 </q-item>
               </template>
@@ -128,7 +163,8 @@
           </div>
           <div class="form-group">
             <div>Line</div>
-            <q-select class="filter-all" filled label="Select Line" :options="optionslines">
+            <q-select class="filter-all" filled v-model="modelValue" multiple :options="optionslines" use-chips
+              stack-label label="Select Line">
               <template v-slot:option="{ itemProps, opt, selected, toggleOption }">
                 <q-item v-bind="itemProps">
                   <q-item-section>
@@ -143,8 +179,8 @@
           </div>
         </div>
         <q-card-actions class="q-mt-lg" align="right">
-          <q-btn flat label="Reset" color="negative" @click="resetFilter" />
-          <q-btn label="Show Results" color="primary" @click="showResults" />
+          <q-btn flat label="Reset" color="red" @click="resetFilter" />
+          <q-btn label="Show Results" color="grey" @click="showResults" />
         </q-card-actions>
       </q-card-section>
     </q-card>
@@ -160,6 +196,8 @@ import { ref } from "vue";
 import ListPage from "./ListPage.vue";
 import { isCancel } from "axios";
 import { QCard, QDate, QPopupProxy } from "quasar";
+import { QPageContainer, QList, QExpansionItem, QItem, QItemSection, QIcon } from 'quasar';
+
 
 export default {
   name: "ListPage",
@@ -167,9 +205,16 @@ export default {
     QCard,
     QDate,
     QPopupProxy,
+    QPageContainer,
+    QList,
+    QExpansionItem,
+    QItem,
+    QItemSection,
+    QIcon,
   },
   name: "ZoomableComponent",
   setup() {
+
     const showModal = ref(false);
 
     const modalTitle = ref("");
@@ -210,6 +255,9 @@ export default {
       toggleDatePopup();
     };
 
+    const tableData = () => {
+      console.log(this.tableData);
+    }
     const eventsData = ref([
       // Data untuk q-table
     ]);
@@ -219,6 +267,7 @@ export default {
     ]);
 
     const openFilterModal = () => {
+      datePopup.value = false;
       modalTitle.value = "Filter";
       isFilterModal.value = true;
       showModal.value = true;
@@ -249,19 +298,33 @@ export default {
     };
 
     // Inisialisasi skala zoom
-    const zoomLevel = ref(1);
+    const zoomLevel = ref(100);
 
     // Fungsi untuk memperbesar zoom
     const zoomIn = () => {
-      if (zoomLevel.value < 2) { // Batas maksimum zoom
-        zoomLevel.value += 0.1;
+      if (zoomLevel.value < 200) { // Batas maksimum zoom
+        zoomLevel.value += 10;
+        updateTitle();
       }
+    };
+
+    const updateTitle = () => {
+      document.title = `Zoom Level: ${zoomLevel.value}%`;
     };
 
     // Fungsi untuk memperkecil zoom
     const zoomOut = () => {
-      if (zoomLevel.value > 0.5) { // Batas minimum zoom
-        zoomLevel.value -= 0.1;
+      if (zoomLevel.value > 50) { // Batas minimum zoom
+        zoomLevel.value -= 10;
+        updateTitle();
+      }
+    };
+
+    const updateZoom = (direction) => {
+      if (direction === 'in') {
+        zoomIn();
+      } else if (direction === 'out') {
+        zoomOut();
       }
     };
     return {
@@ -285,11 +348,10 @@ export default {
       datePopup,
       toggleDatePopup,
       confirmDate,
-    };
+      updateTitle,
+      modelMultiple: ref([]),
+      modelValue: ref([]),
 
-  },
-  data() {
-    return {
       statuses: ref([
         { label: "Preparation", color: "#e0e0e0" },
         { label: "Planning", color: "#42a5f5" },
@@ -300,9 +362,21 @@ export default {
         { label: "Production", color: "#ffb74d" },
         { label: "Complete", color: "#a5d6a7" },
       ]),
-    }
+
+      //     const tableData: [
+      //     { workOrder: 'Order 1', processes: ['Process 1', 'Process 2'] },
+      //     { workOrder: 'Order 2', processes: ['Process 3'] },
+      //   ]
+    };
+
   },
+
   methods: {
+    onDateSelect(date) {
+      this.selectedDate = date;
+      this.datePopup = false; // Menutup popup setelah memilih tanggal
+    },
+
     viewItem(item) {
       this.$q.notify({
         message: `Clicked on ${item.name}`,
@@ -371,6 +445,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 50px;
 }
 
 .container-column {
@@ -392,5 +467,27 @@ hr.solid {
   border-radius: 12px;
   border: 1px solid #CED3D7;
   color: #585858;
+}
+
+.bordered {
+  border: 1px solid #CED3D7;
+  border-radius: 4px;
+}
+
+.q-list .q-expansion-item {
+  border-bottom: 1px solid #CED3D7;
+}
+
+.q-expansion-item:last-child {
+  border-bottom: none;
+}
+
+.q-expansion-item-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filterDate {
+  color: white;
 }
 </style>
